@@ -16,10 +16,6 @@ public class Role {
     @Column(name = "role_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
-
     @Column(name = "role_name")
     private String role;
 
