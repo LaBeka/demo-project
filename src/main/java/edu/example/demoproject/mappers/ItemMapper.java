@@ -11,15 +11,13 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class ItemMapper {
     private ProductMapper productMapper;
-    private CartMapper cartMapper;
     public ItemDto buildItem(Item item){
         ProductDto productDto = this.productMapper.buildProduct(
                 item.getProduct());
-        CartDto cartDto = this.cartMapper.buildCart(item.getCart());
 
         return ItemDto.builder()
                 .id(item.getId())
-                .cartDto(cartDto)
+                .cart(item.getCart())
                 .productDto(productDto)
                 .qty(item.getQty())
                 .build();

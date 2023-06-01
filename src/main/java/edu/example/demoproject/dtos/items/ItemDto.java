@@ -1,7 +1,7 @@
 package edu.example.demoproject.dtos.items;
 
-import edu.example.demoproject.dtos.cart.CartDto;
 import edu.example.demoproject.dtos.product.ProductDto;
+import edu.example.demoproject.entities.Cart;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class ItemDto {
     private Long id;
-    private CartDto cartDto;
+    private Cart cart;
     private ProductDto productDto;
     private int qty;
 }
