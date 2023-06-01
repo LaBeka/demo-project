@@ -15,7 +15,7 @@ import java.util.Set;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "product_id")
     private Long id;
 
     @Column(length = 128, name = "name")
@@ -40,11 +40,11 @@ public class Product {
     private boolean newProduct;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "brand_id")
     private Brand brand;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)

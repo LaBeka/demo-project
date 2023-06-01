@@ -13,9 +13,10 @@ import java.util.Set;
 @Getter
 @Table(name="brands")
 public class Brand {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "brand_id")
     private Long id;
 
     @Column(name = "name")
@@ -23,5 +24,4 @@ public class Brand {
 
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
     private Set<Product> products;
-
 }
