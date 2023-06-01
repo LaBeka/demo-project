@@ -8,7 +8,7 @@ import lombok.Data;
 @Builder
 @Data
 public class ItemDto {
-    private Long itemId;
+    private Long id;
     private CartDto cartDto;
     private ProductDto productDto;
     private int qty;

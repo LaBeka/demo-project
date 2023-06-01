@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name="cart_items")
-public class CartItem {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")

@@ -1,6 +1,7 @@
 package edu.example.demoproject.dtos.product;
 
-import edu.example.demoproject.entities.*;
+import edu.example.demoproject.dtos.brand.BrandDto;
+import edu.example.demoproject.dtos.category.CategoryDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,6 +15,6 @@ public class ProductDto {
     private Double initialPrice;
     private Integer discount;
     private boolean newProduct;
-    private Brand brand;
-    private Category category;
+    private BrandDto brand;
+    private CategoryDto category;
 }
