@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class BrandMapper {
     public BrandDto buildBrand(Brand brand){
         return BrandDto.builder()
+                .id(brand.getId())
                 .name(brand.getName())
                 .build();
     }

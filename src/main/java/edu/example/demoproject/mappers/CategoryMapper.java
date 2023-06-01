@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class CategoryMapper {
     public CategoryDto buildCategory(Category category){
         return CategoryDto.builder()
+                .id(category.getId())
                 .name(category.getName())
                 .build();
     }

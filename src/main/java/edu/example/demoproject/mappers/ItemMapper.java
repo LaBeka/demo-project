@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class ItemMapper {
-    private ProductMapper productMapper;
+    final private ProductMapper productMapper;
     public ItemDto buildItem(Item item){
         ProductDto productDto = this.productMapper.buildProduct(
                 item.getProduct());

@@ -35,11 +35,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .clearAuthentication(true)
                 .invalidateHttpSession(true);
 
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/**").permitAll();
-
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/product/add").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/product/all").permitAll();
 //        http.authorizeRequests()
 //                .anyRequest().permitAll();
 
+        http.csrf().disable();
     }
 
     @Override

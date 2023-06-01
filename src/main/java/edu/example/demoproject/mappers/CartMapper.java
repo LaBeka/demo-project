@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 @Component
 @AllArgsConstructor
 public class CartMapper{
-    private UserMapper userMapper;
-    private ItemMapper itemMapper;
+    final private UserMapper userMapper;
+    final private ItemMapper itemMapper;
     public CartDto buildCart(Cart cart){
 
         UserDto userDto = this.userMapper.buildUser(cart.getUser());

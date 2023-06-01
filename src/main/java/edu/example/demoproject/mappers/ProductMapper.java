@@ -11,8 +11,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @Component
 @AllArgsConstructor
 public class ProductMapper {
-    private CategoryMapper categoryMapper;
-    private BrandMapper brandMapper;
+    final private CategoryMapper categoryMapper;
+    final private BrandMapper brandMapper;
     public ProductDto buildProduct(Product product){
         ServletUriComponentsBuilder uriBuilder = ServletUriComponentsBuilder.fromCurrentRequestUri();
         System.out.println(uriBuilder);
