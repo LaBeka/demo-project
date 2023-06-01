@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
@@ -86,14 +87,34 @@ public class ProductController {
     }
 
     @GetMapping("/all")
+    @CrossOrigin(origins = "http://localhost:63342")
     public ResponseEntity getList(ProductSearchDto dto, Pageable pageable){
         PageImpl<Product> resultList = productService.rawSearch(dto, pageable);
 
+        if(resultList.getTotalElements() == 0){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);// error 404 not found any products
+        }
         List<ProductDto> resultListDto =  resultList.stream()
                 .map(p -> this.productMapper.buildProduct(p))
                 .collect(Collectors.toList());
 
         return new ResponseEntity(resultListDto, HttpStatus.OK);
-     }
+    }
+    @GetMapping("/inWord/{word}")
+    @CrossOrigin(origins = "http://localhost:63342")
+    public ResponseEntity getListInString(
+            @Valid @Size(min = 3) @PathVariable String word,
+            Pageable pageable
+    ){
+        PageImpl<Product> resultList = productService.searchInWord(word.toLowerCase(), pageable);
 
+        if(resultList.getTotalElements() == 0){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);// error 404 not found any products
+        }
+        List<ProductDto> resultListDto =  resultList.stream()
+                .map(p -> this.productMapper.buildProduct(p))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity(resultListDto, HttpStatus.OK);
+    }
 }

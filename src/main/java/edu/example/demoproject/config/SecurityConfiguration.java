@@ -36,7 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true);
 
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/product/add").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/product/all").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/product/**").permitAll();
 //        http.authorizeRequests()
 //                .anyRequest().permitAll();
 

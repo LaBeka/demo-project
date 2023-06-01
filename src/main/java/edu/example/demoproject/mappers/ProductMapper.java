@@ -23,6 +23,9 @@ public class ProductMapper {
 
         BrandDto brandDto = brandMapper.buildBrand(product.getBrand());
 
+        double price = product.getInitialPrice();;
+        double discount = product.getDiscount();
+        product.setCurrentPrice(price - (discount * price) / 100);
         return ProductDto.builder()
                 .id(product.getId())
                 .name(product.getName())
@@ -30,6 +33,7 @@ public class ProductMapper {
                 .description(product.getDescription())
                 .initialPrice(product.getInitialPrice())
                 .discount(product.getDiscount())
+                .currentPrice(String.format("%.2f", product.getCurrentPrice()))
                 .newProduct(product.isNewProduct())
                 .brand(brandDto)
                 .category(categoryDto)

@@ -8,7 +8,9 @@ import edu.example.demoproject.repos.CategoryRepository;
 import edu.example.demoproject.repos.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +27,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,6 +80,18 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
+    private Long getTotalCount(CriteriaBuilder criteriaBuilder, List<Predicate> predicates){
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+        Root<Product> root = criteriaQuery.from(Product.class);
+
+        Predicate[] predicateArray = new Predicate[predicates.size()];
+        predicates.toArray(predicateArray);
+        criteriaQuery.select(criteriaBuilder.count(root));
+        criteriaQuery.where(predicateArray);
+
+        return entityManager.createQuery(criteriaQuery).getSingleResult();
+    }
+
     public PageImpl<Product> rawSearch(ProductSearchDto dto, Pageable pageable) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Product> criteriaQuery =
@@ -111,66 +126,45 @@ public class ProductService {
             criteriaQuery.where(predicateCategory);
             predicates.add(predicateCategory);
         }
-        if (dto.getLoweredPrice() != null) {
-            Predicate predicateLowered = criteriaBuilder.equal(from.get("category"), dto.getCategory());
+
+        if (dto.isLoweredPrice()) {
+            Predicate predicateLowered = criteriaBuilder.between(from.get("discount"), 1, 99);
             criteriaQuery.where(predicateLowered);
             predicates.add(predicateLowered);
         }
+
+        return returnSearch(pageable, criteriaBuilder, criteriaQuery, from, select, predicates);
+    }
+
+    private PageImpl<Product> returnSearch(Pageable pageable, CriteriaBuilder criteriaBuilder, CriteriaQuery<Product> criteriaQuery, Root<Product> from, CriteriaQuery<Product> select, List<Predicate> predicates) {
+        criteriaQuery.orderBy(criteriaBuilder.desc(from.get("currentPrice")));
+
         TypedQuery<Product> typedQuery = entityManager.createQuery(select);
 
-        TypedQuery<Product> productTypedQuery = typedQuery.setFirstResult(Math.toIntExact(pageable.getOffset()));
-        TypedQuery<Product> productTypedQuery1 = typedQuery.setMaxResults(pageable.getPageSize());
+        typedQuery.setFirstResult(Math.toIntExact(pageable.getOffset()));
+        typedQuery.setMaxResults(pageable.getPageSize());
 
         PageImpl<Product> pagedProducts = new PageImpl<Product>(typedQuery.getResultList(), pageable, getTotalCount(criteriaBuilder, predicates));
         return pagedProducts;
     }
-    private Long getTotalCount(CriteriaBuilder criteriaBuilder, List<Predicate> predicates){
-        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-        Root<Product> root = criteriaQuery.from(Product.class);
 
-        Predicate[] predicateArray = new Predicate[predicates.size()];
-        predicates.toArray(predicateArray);
-        criteriaQuery.select(criteriaBuilder.count(root));
-        criteriaQuery.where(predicateArray);
+    public PageImpl<Product> searchInWord(String word, Pageable pageable) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> criteriaQuery =
+                criteriaBuilder.createQuery(Product.class);
 
-        return entityManager.createQuery(criteriaQuery).getSingleResult();
+        Root<Product> from = criteriaQuery.from(Product.class);
+        CriteriaQuery<Product> select = criteriaQuery.select(from);
+        List<Predicate> predicates = new ArrayList<>();
+
+        Predicate predicateName = criteriaBuilder.like(from.get("name"), "%" + word + "%");
+        criteriaQuery.where(predicateName);
+        predicates.add(predicateName);
+        Predicate predicateDescription = criteriaBuilder.like(from.get("description"), "%" + word + "%");
+        criteriaQuery.where(predicateDescription);
+        predicates.add(predicateDescription);
+
+        return returnSearch(pageable, criteriaBuilder, criteriaQuery, from, select, predicates);
     }
 
-
-//    public List<Product> search(ProductSearchDto dto) {
-//        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-//        CriteriaQuery<Product> criteriaQuery =
-//                criteriaBuilder.createQuery(Product.class);
-//
-//        List<Predicate> predicates = new ArrayList<>();
-//        Root<Product> from = criteriaQuery.from(Product.class);
-//        CriteriaQuery<Product> select = criteriaQuery.select(from);
-//        if (dto.getName() != null) {
-//            Predicate namePredicate =
-//                criteriaBuilder.like(from.get("name"), "%" +dto.getName() + "%");
-//        }
-//        if (dto.getBrand() != null) {
-//            Predicate namePredicate =
-//                    criteriaBuilder.like(from.get("brand"), "%" +dto.getName() + "%");
-//            predicates.add(namePredicate);
-//        }
-//        if (dto.getCategory() != null) {
-//            Predicate categoryPredicate =
-//                    criteriaBuilder.like(from.get("category"), "%" +dto.getName() + "%");
-//            predicates.add(categoryPredicate);
-//        }
-//        if (dto.getDescription() != null) {
-//            Predicate descriptionPredicate =
-//                    criteriaBuilder.like(from.get("description"), "%" +dto.getName() + "%");
-//            predicates.add(descriptionPredicate);
-//        }
-//
-//        criteriaQuery.where(
-//                criteriaBuilder.or(predicates.toArray(new Predicate[0]))
-//        );
-//
-//        TypedQuery<Product> typedQuery = entityManager.createQuery(criteriaQuery);
-//
-//        return typedQuery.getResultList();
-//    }
 }

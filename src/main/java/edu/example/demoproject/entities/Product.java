@@ -36,6 +36,9 @@ public class Product {
     @Column(name = "discount")
     private Integer discount;
 
+    @Column(name = "current_price")
+    private Double currentPrice;
+
     @Column(name = "new_product")
     private boolean newProduct;
 

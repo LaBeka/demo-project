@@ -14,6 +14,7 @@ public class ProductDto {
     private String description;
     private Double initialPrice;
     private Integer discount;
+    private String currentPrice;
     private boolean newProduct;
     private BrandDto brand;
     private CategoryDto category;
