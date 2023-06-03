@@ -15,15 +15,14 @@ public class ProductMapper {
     final private BrandMapper brandMapper;
     public ProductDto buildProduct(Product product){
         ServletUriComponentsBuilder uriBuilder = ServletUriComponentsBuilder.fromCurrentRequestUri();
-        System.out.println(uriBuilder);
-        uriBuilder.replacePath("/product/" + product.getId() + "/image");
+        uriBuilder.replacePath("/product/image/" + product.getId());
         product.setImage(uriBuilder.build().toString());
 
         CategoryDto categoryDto = categoryMapper.buildCategory(product.getCategory());
 
         BrandDto brandDto = brandMapper.buildBrand(product.getBrand());
 
-        double price = product.getInitialPrice();;
+        double price = product.getInitialPrice();
         double discount = product.getDiscount();
         product.setCurrentPrice(price - (discount * price) / 100);
         return ProductDto.builder()

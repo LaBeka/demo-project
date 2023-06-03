@@ -1,0 +1,24 @@
+.custom-file {
+    border: 1px solid;
+    padding: 3px;
+    border-radius: 26px;
+    height: calc(2.5em + 0.75rem + 2px);
+    display: flex;
+    position: sticky;
+    top: 0;
+}
+.custom-file input {
+    width: 80%;
+    margin: 10px 0px 9px 20px;
+}
+.custom-file button {
+    width: 60px;
+    height: 27px;
+    margin: 9px 0 0;
+}
+.products-block img{
+    width: 70%;
+}
+.products-block img, div{
+    text-align: center;
+}

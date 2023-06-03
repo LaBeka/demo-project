@@ -1,5 +1,6 @@
 package edu.example.demoproject.controllers;
 
+import edu.example.demoproject.dtos.PageDto;
 import edu.example.demoproject.dtos.product.ProductDto;
 import edu.example.demoproject.dtos.product.ProductSearchDto;
 import edu.example.demoproject.dtos.product.ProductCreateDto;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -104,8 +106,10 @@ public class ProductController {
     @CrossOrigin(origins = "http://localhost:63342")
     public ResponseEntity getListInString(
             @Valid @Size(min = 3) @PathVariable String word,
-            Pageable pageable
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "2") int size
     ){
+        Pageable pageable = PageRequest.of(page, size);
         PageImpl<Product> resultList = productService.searchInWord(word.toLowerCase(), pageable);
 
         if(resultList.getTotalElements() == 0){
@@ -115,6 +119,12 @@ public class ProductController {
                 .map(p -> this.productMapper.buildProduct(p))
                 .collect(Collectors.toList());
 
-        return new ResponseEntity(resultListDto, HttpStatus.OK);
+        PageDto<ProductDto> pageDto = new PageDto<>(
+                resultListDto,
+                resultList.getTotalPages(),
+                resultList.getTotalElements(),
+                resultList.getSize());
+        return new ResponseEntity(pageDto, HttpStatus.OK
+        );
     }
 }

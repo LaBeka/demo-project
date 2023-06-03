@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -41,10 +42,7 @@ public class ProductService {
 
     public boolean isAllowedAddNewProd(ProductCreateDto dto){
         Optional<Product> findIdenticalProduct = productRepository.findByNameAndBrand(dto.getName(), dto.getBrand());
-        if (findIdenticalProduct.isPresent()){
-            return true;
-        }
-        return false;
+        return findIdenticalProduct.isPresent();
     }
 
     public Optional<Product> saveProduct(ProductCreateDto dto) throws IOException {
@@ -82,12 +80,17 @@ public class ProductService {
 
     private Long getTotalCount(CriteriaBuilder criteriaBuilder, List<Predicate> predicates){
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-        Root<Product> root = criteriaQuery.from(Product.class);
+        criteriaQuery.select((criteriaBuilder.count(criteriaQuery.from(Product.class))));
+        //        Root<Product> root = criteriaQuery.from(Product.class);
 
         Predicate[] predicateArray = new Predicate[predicates.size()];
         predicates.toArray(predicateArray);
-        criteriaQuery.select(criteriaBuilder.count(root));
+//        criteriaQuery.select(criteriaBuilder.count(root));
+//        criteriaQuery.where(predicateArray);
+
+        entityManager.createQuery(criteriaQuery);
         criteriaQuery.where(predicateArray);
+        Long count = entityManager.createQuery(criteriaQuery).getSingleResult();
 
         return entityManager.createQuery(criteriaQuery).getSingleResult();
     }
