@@ -130,9 +130,3 @@ public class ProductController {
         );
     }
 }
-//new PageDto<ProductDto>(
-//                product,
-//                pageable.getPageNumber(),
-//                productService.countByName(name),
-//                pageable.getPageSize()),
-//                HttpStatus.OK
