@@ -110,7 +110,7 @@ public class ProductController {
             @RequestParam(required = false, defaultValue = "2") int size
     ){
         Pageable pageable = PageRequest.of(page, size);
-        PageImpl<Product> resultList = productService.searchInWord(word.toLowerCase(), pageable);
+        PageImpl<Product> resultList = productService.searchInWord(word, pageable);
 
         if(resultList.getTotalElements() == 0){
             return new ResponseEntity(HttpStatus.NOT_FOUND);// error 404 not found any products
