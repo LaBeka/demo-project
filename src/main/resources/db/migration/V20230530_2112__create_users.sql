@@ -2,7 +2,7 @@ create table users (
                            user_id bigserial  PRIMARY KEY NOT NULL,
                            full_name varchar(328) NOT NULL,
                            account_name varchar(128) NOT NULL,
-                           email varchar(128) NOT NULL,
+                           email varchar(128) NOT NULL UNIQUE,
                            password varchar(128) NOT NULL,
                            enabled BOOLEAN NOT NULL
 );

@@ -16,13 +16,13 @@ import java.util.Set;
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "cart_id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "cart")
-    private Set<CartItem> cartItems;
+    private Set<Item> items;
 }

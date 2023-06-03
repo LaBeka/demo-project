@@ -1,6 +1,6 @@
 create table users_roles (
-                       roles bigint references roles(role_id),
-                       users bigint references users(user_id)
+           roles bigint references roles(role_id) ON DELETE CASCADE ,
+           users bigint references users(user_id) ON DELETE CASCADE
 );
 
 insert into users_roles (roles, users) values
@@ -9,4 +9,4 @@ insert into users_roles (roles, users) values
       (3, 3),
       (4, 4),
       (5, 5),
-      (6, 1) ;
+      (1, 6) ;
