@@ -143,7 +143,6 @@ public class ProductService {
     }
 
     public PageImpl<Product> searchInWord(String word, Pageable pageable) {
-        buildCriteria();
         CriteriaBuilder criteriaBuilder = enManager.getCriteriaBuilder();
         CriteriaQuery<Product> criteriaQuery =
                 criteriaBuilder.createQuery(Product.class);
@@ -178,10 +177,7 @@ public class ProductService {
         Long totalCount = getTotalCount(criteriaBuilder, finalPredicate);
         PageImpl<Product> pagedProducts = new PageImpl<Product>(resultList, pgbl, totalCount);
         return pagedProducts;
-        //return returnSearch(pageable, criteriaBuilder, criteriaQuery, from, select, predicates);
     }
 
-    private void buildCriteria() {
-    }
 
 }
