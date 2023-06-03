@@ -1,9 +1,8 @@
 let body = document.querySelector('body');
 let page = 0;
-let defaultSearchSize = 2;
+let defaultSearchSize = 20;
 let totalPages;
 let currentPage = document.querySelector('.current-page');
-//let switchRequest = false;
 
 let wordForm = document.getElementById('search-in-word');
 let searchValue = document.getElementById('in-word');
@@ -12,7 +11,6 @@ let nextButton = document.querySelector('.next');
 let prevButton = document.querySelector('.prev');
 
 wordForm.addEventListener('submit', event => {
-    // switchRequest = false;
     event.preventDefault();
     displayProducts();
 });
@@ -37,7 +35,7 @@ function displayProducts(){
             if (totalPages === 0){
                 totalPages = 1
             }
-            currentPage.textContent = `Page ${data.page + 1} of total ${data.total}`;
+            currentPage.textContent = `Page ${data.page} of total ${totalPages}`;
         })
         .catch(error => {
             alert("No products to show by this search");
@@ -88,11 +86,6 @@ function createProductCard(product) {
 nextButton.addEventListener('click', () => {
     if (page < totalPages - 1) {
         page++;
-        // if(switchRequest === true) {
-        //     showDetailedProducts();
-        // } else {
-        //     showProducts();
-        // }
         displayProducts();
     }
 });
@@ -100,11 +93,6 @@ nextButton.addEventListener('click', () => {
 prevButton.addEventListener('click', () => {
     if (page > 0) {
         page--;
-        // if(switchRequest === true) {
-        //     showDetailedProducts();
-        // } else {
-        //     showProducts();
-        // }
         displayProducts();
     }
 });

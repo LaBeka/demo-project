@@ -7,15 +7,13 @@ import edu.example.demoproject.repos.BrandRepository;
 import edu.example.demoproject.repos.CategoryRepository;
 import edu.example.demoproject.repos.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.hibernate.jpa.QueryHints;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -28,7 +26,6 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +35,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
-    private final EntityManager entityManager;
+    private final EntityManager enManager;
 
     public boolean isAllowedAddNewProd(ProductCreateDto dto){
         Optional<Product> findIdenticalProduct = productRepository.findByNameAndBrand(dto.getName(), dto.getBrand());
@@ -80,23 +77,22 @@ public class ProductService {
 
     private Long getTotalCount(CriteriaBuilder criteriaBuilder, List<Predicate> predicates){
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-        criteriaQuery.select((criteriaBuilder.count(criteriaQuery.from(Product.class))));
-        //        Root<Product> root = criteriaQuery.from(Product.class);
+        Root<Product> root = criteriaQuery.from(Product.class);
+        criteriaQuery.select(criteriaBuilder.count(root));
 
-        Predicate[] predicateArray = new Predicate[predicates.size()];
-        predicates.toArray(predicateArray);
-//        criteriaQuery.select(criteriaBuilder.count(root));
-//        criteriaQuery.where(predicateArray);
-
-        entityManager.createQuery(criteriaQuery);
-        criteriaQuery.where(predicateArray);
-        Long count = entityManager.createQuery(criteriaQuery).getSingleResult();
-
-        return entityManager.createQuery(criteriaQuery).getSingleResult();
+        enManager.createQuery(criteriaQuery);
+        Long total = 0L;
+        for(int i = 0; i < predicates.size(); i++){
+            criteriaQuery.where(predicates.get(i));
+            TypedQuery<Long> query = enManager.createQuery(criteriaQuery);
+            Long l = query.getSingleResult();
+            total += l;
+        }
+        return total;
     }
 
     public PageImpl<Product> rawSearch(ProductSearchDto dto, Pageable pageable) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaBuilder criteriaBuilder = enManager.getCriteriaBuilder();
         CriteriaQuery<Product> criteriaQuery =
                 criteriaBuilder.createQuery(Product.class);
 
@@ -139,20 +135,29 @@ public class ProductService {
         return returnSearch(pageable, criteriaBuilder, criteriaQuery, from, select, predicates);
     }
 
-    private PageImpl<Product> returnSearch(Pageable pageable, CriteriaBuilder criteriaBuilder, CriteriaQuery<Product> criteriaQuery, Root<Product> from, CriteriaQuery<Product> select, List<Predicate> predicates) {
+    private PageImpl<Product> returnSearch(
+            Pageable pageable,
+            CriteriaBuilder criteriaBuilder,
+            CriteriaQuery<Product> criteriaQuery,
+            Root<Product> from,
+            CriteriaQuery<Product> select,
+            List<Predicate> predicates) {
         criteriaQuery.orderBy(criteriaBuilder.desc(from.get("currentPrice")));
 
-        TypedQuery<Product> typedQuery = entityManager.createQuery(select);
+        TypedQuery<Product> typedQuery = enManager.createQuery(select);
 
         typedQuery.setFirstResult(Math.toIntExact(pageable.getOffset()));
         typedQuery.setMaxResults(pageable.getPageSize());
 
-        PageImpl<Product> pagedProducts = new PageImpl<Product>(typedQuery.getResultList(), pageable, getTotalCount(criteriaBuilder, predicates));
+        List<Product> resultList = typedQuery.getResultList();
+        Pageable pgbl = pageable;
+        Long totalCount = getTotalCount(criteriaBuilder, predicates);
+        PageImpl<Product> pagedProducts = new PageImpl<Product>(resultList, pgbl, totalCount);
         return pagedProducts;
     }
 
     public PageImpl<Product> searchInWord(String word, Pageable pageable) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaBuilder criteriaBuilder = enManager.getCriteriaBuilder();
         CriteriaQuery<Product> criteriaQuery =
                 criteriaBuilder.createQuery(Product.class);
 
@@ -160,12 +165,9 @@ public class ProductService {
         CriteriaQuery<Product> select = criteriaQuery.select(from);
         List<Predicate> predicates = new ArrayList<>();
 
-        Predicate predicateName = criteriaBuilder.like(from.get("name"), "%" + word + "%");
-        criteriaQuery.where(predicateName);
-        predicates.add(predicateName);
-        Predicate predicateDescription = criteriaBuilder.like(from.get("description"), "%" + word + "%");
-        criteriaQuery.where(predicateDescription);
-        predicates.add(predicateDescription);
+
+        predicates.add(criteriaBuilder.like(from.get("name"), "%" + word + "%"));
+        predicates.add(criteriaBuilder.like(from.get("description"), "%" + word + "%"));
 
         return returnSearch(pageable, criteriaBuilder, criteriaQuery, from, select, predicates);
     }

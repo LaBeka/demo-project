@@ -119,12 +119,20 @@ public class ProductController {
                 .map(p -> this.productMapper.buildProduct(p))
                 .collect(Collectors.toList());
 
-        PageDto<ProductDto> pageDto = new PageDto<>(
+        int totalPages = resultList.getTotalPages();
+        long totalElements = resultList.getTotalElements();
+        int size1 = resultList.getSize();
+        return new ResponseEntity(new PageDto<>(
                 resultListDto,
-                resultList.getTotalPages(),
-                resultList.getTotalElements(),
-                resultList.getSize());
-        return new ResponseEntity(pageDto, HttpStatus.OK
+                totalPages,
+                totalElements,
+                size1), HttpStatus.OK
         );
     }
 }
+//new PageDto<ProductDto>(
+//                product,
+//                pageable.getPageNumber(),
+//                productService.countByName(name),
+//                pageable.getPageSize()),
+//                HttpStatus.OK

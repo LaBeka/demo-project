@@ -10,8 +10,8 @@
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -61,9 +61,9 @@
     <h1 class="text-center mb-4 mt-5 main-title">Products</h1>
     <div class="pagination" id="pagination" style="display: none">
         <div class="text-center mb-4 mt-5 main-title">
-            <div><a href="#" class="prev">Prev</a></div>
-            <div><a href="#" class="current-page active">0</a></div>
-            <div><a href="#" class="next">Next</a></div>
+            <div><a class="prev">Prev</a></div>
+            <div><a class="current-page active">0</a></div>
+            <div><a class="next">Next</a></div>
         </div>
     </div>
     <div class="products-block row"></div>
