@@ -51,6 +51,7 @@ public class ProductController {
 
         Optional<Product> product  = productService.saveProduct(productCreateDto);
         if(product.isEmpty()){
+            //after this I need another endpoint
             return new ResponseEntity("No product created", HttpStatus.BAD_GATEWAY);//error 502 for some reason product is not saved, try again
         }
         return new ResponseEntity(this.productMapper.buildProduct(product.get()), HttpStatus.OK);
@@ -67,7 +68,7 @@ public class ProductController {
         }
         Optional<Product> foundProduct = productService.findProductById(parsedID);
         if(foundProduct.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); //eror 404 couldnt find product
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         Path userImageDirectory = Paths.get("storage", foundProduct.get().getImage());
@@ -79,7 +80,7 @@ public class ProductController {
         } catch (IOException ex) {
             System.out.println("Could not determine file type.");
         }
-        if (contentType == null) {// Fallback to the default content type if type could not be determined
+        if (contentType == null) {
             contentType = "application/octet-stream";//binary data == octet-stream
         }
         return ResponseEntity.ok()
@@ -90,18 +91,16 @@ public class ProductController {
 
     @GetMapping("/all")
     @CrossOrigin(origins = "http://localhost:63342")
-    public ResponseEntity getList(ProductSearchDto dto, Pageable pageable){
+    public ResponseEntity getList(ProductSearchDto dto,
+                                  @RequestParam(required = false, defaultValue = "0") int page,
+                                  @RequestParam(required = false, defaultValue = "2") int size
+    ){
+        Pageable pageable = PageRequest.of(page, size);
         PageImpl<Product> resultList = productService.rawSearch(dto, pageable);
 
-        if(resultList.getTotalElements() == 0){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);// error 404 not found any products
-        }
-        List<ProductDto> resultListDto =  resultList.stream()
-                .map(p -> this.productMapper.buildProduct(p))
-                .collect(Collectors.toList());
-
-        return new ResponseEntity(resultListDto, HttpStatus.OK);
+        return getResponseEntity(resultList);
     }
+
     @GetMapping("/inWord/{word}")
     @CrossOrigin(origins = "http://localhost:63342")
     public ResponseEntity getListInString(
@@ -112,8 +111,12 @@ public class ProductController {
         Pageable pageable = PageRequest.of(page, size);
         PageImpl<Product> resultList = productService.searchInWord(word, pageable);
 
+        return getResponseEntity(resultList);
+    }
+
+    private ResponseEntity getResponseEntity(PageImpl<Product> resultList) {
         if(resultList.getTotalElements() == 0){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);// error 404 not found any products
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         List<ProductDto> resultListDto =  resultList.stream()
                 .map(p -> this.productMapper.buildProduct(p))
@@ -122,11 +125,6 @@ public class ProductController {
         int totalPages = resultList.getTotalPages();
         long totalElements = resultList.getTotalElements();
         int size1 = resultList.getSize();
-        return new ResponseEntity(new PageDto<>(
-                resultListDto,
-                totalPages,
-                totalElements,
-                size1), HttpStatus.OK
-        );
+        return new ResponseEntity(new PageDto<>(resultListDto, totalPages, totalElements, size1), HttpStatus.OK);
     }
 }
