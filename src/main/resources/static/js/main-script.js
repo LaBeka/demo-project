@@ -51,22 +51,22 @@ function createProductCard(product) {
     newRow.appendChild(newElem);
 
     newElem.innerHTML = `
-        <div class="product-cart mb-4">
-            <img src="${product.image}" class="card-img-center" alt="${product.name}">
-            <div class="card-body">
-                <h5 class="card-title">${product.name}</h5>
-                <p class="card-text">Price initialPrice: ${product.initialPrice} сом</p>
-                <p class="card-text">brand: ${product.brand.name}</p>
-                <p class="card-text">discount: ${product.discount}</p>
-                <p className="card-text">currentPrice: ${product.currentPrice}</p>
-                <p class="card-text">category: ${product.category.name}</p>
-                <form action="/addItem" method="post" id="addItemCart">
-                    <input type="hidden" id="name" name="name" value="${product.name}"/>
-                    <button class="btn btn-primary" type="submit">Add to cart</button>
-                </form>
-                
-            </div>
-        </div>`;
+           <form id="addItemCart">
+                <input type="hidden" id="productId" name="productId" value="${product.id}"/>
+                <a href="#"/> 
+<!--               via body @RequestParam("productId") Long productId-->
+                <div class="product-cart mb-4">
+                    <img src="${product.image}" class="card-img-center" alt="${product.name}">
+                    <div class="card-body">
+                        <h5 class="card-title">${product.name}</h5>
+                        <p class="card-text">Price initialPrice: ${product.initialPrice} сом</p>
+                        <p class="card-text">brand: ${product.brand.name}</p>
+                        <p class="card-text">discount: ${product.discount}</p>
+                        <p className="card-text">currentPrice: ${product.currentPrice}</p>
+                        <p class="card-text">category: ${product.category.name}</p>                
+                    </div>
+                </div>
+            </form>`;
 
     let productsBlock = document.querySelector(".products-block");
     let lastRow = productsBlock.querySelector(".row:last-of-type"); // находим последний ряд

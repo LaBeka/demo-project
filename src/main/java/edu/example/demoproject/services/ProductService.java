@@ -140,7 +140,6 @@ public class ProductService {
         Predicate finalPredicate = criteriaBuilder.or(predicateName, predicateDescription);
         criteriaQuery.where(finalPredicate);
 
-
         return returnSearch(pageable, criteriaBuilder, criteriaQuery, from, select, finalPredicate);
     }
 }

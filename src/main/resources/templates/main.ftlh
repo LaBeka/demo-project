@@ -27,17 +27,17 @@
             <div class="collapse navbar-collapse" id="menuExpanded">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="#">Brands</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">Feature</a>
+                        <a class="nav-link" href="#">New products</a>
                     </li>
 
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">Page</a>
+                        <a class="nav-link" href="#">Categories</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">Contact</a>
+                        <a class="nav-link" href="#">Lowered price</a>
                     </li>
                 </ul>
             </div>
@@ -70,7 +70,8 @@
 </div>
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="js/script.js"></script>
+<script src="js/main-script.js"></script>
+<script src="js/product-detail.js"></script>
 
 </body>
 </html>
