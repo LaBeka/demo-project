@@ -19,9 +19,8 @@ public class ProductMapper {
         product.setImage(uriBuilder.build().toString());
 
         CategoryDto categoryDto = categoryMapper.buildCategory(product.getCategory());
-
         BrandDto brandDto = brandMapper.buildBrand(product.getBrand());
-
+        String newProduct = product.isNewProduct() ? "new" : " ";
         double price = product.getInitialPrice();
         double discount = product.getDiscount();
         product.setCurrentPrice(price - (discount * price) / 100);
@@ -33,7 +32,7 @@ public class ProductMapper {
                 .initialPrice(product.getInitialPrice())
                 .discount(product.getDiscount())
                 .currentPrice(String.format("%.2f", product.getCurrentPrice()))
-                .newProduct(product.isNewProduct())
+                .newProduct(newProduct)
                 .brand(brandDto)
                 .category(categoryDto)
                 .build();

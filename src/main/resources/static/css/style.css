@@ -17,6 +17,10 @@
     margin: 9px 0 0;
 }
 .products-block img{
+    width: 500px;
+    height: 500px;
+}
+.products-block img{
     width: 70%;
 }
 .products-block img, div{
@@ -29,4 +33,9 @@
 #product-detail a{
     text-decoration: none;
     color: black;
+}
+button{
+    border: 1px;
+    border-radius: 10px;
+    background-color: #f0edee;
 }

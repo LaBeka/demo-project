@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart-style.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
@@ -45,6 +46,13 @@
                         <a class="nav-link" href="#">Lowered price</a>
                     </li>
                 </ul>
+                <form action="/logout" method="POST">
+                    <button type="submit" class="btn btn-primary">Logout</button>
+                </form>
+                <div class="shopping-header" id="shopping-header">
+                    <img src="images/cart.png"  alt="cart-icon">
+                    <span class="cartQuantity">0</span>
+                </div>
             </div>
         </div>
     </nav>
@@ -66,6 +74,35 @@
     <h1 class="text-center mb-4 mt-5 main-title">Products</h1>
 
     <div class="bg-light py-5">
+    </div>
+</div>
+<div class="shop-cart" id="shop-cart">
+    <h1>Cart</h1>
+    <ul class="listCard">
+                <li>
+                    <div>
+                        <img src="${i.imagePath}" alt="${i.productName}">
+                    </div>
+                    <div>${i.productName}</div>
+                    <div>${i.productPrice}</div>
+
+                    <div>
+                        <form action="/minusOneProduct" method="POST" id="addItemCart">
+                            <input type="hidden" id="name" name="shopCartItemId" value="${i.shopCartItemId}"/>
+                            <button type="submit">-</button>
+                        </form>
+                        <div class="count">${i.qty}</div>
+                        <form action="/plusOneProduct" method="POST" id="addItemCart">
+                            <input type="hidden" id="name" name="shopCartItemId" value="${i.shopCartItemId}"/>
+                            <button type="submit">+</button>
+                        </form>
+                    </div>
+                </li>
+    </ul>
+    <div class="checkout">
+        <#--        click to the total sum to go to orders page-->
+        <div class="total" onclick="createOrder()">0</div>
+        <div class="close">close</div>
     </div>
 </div>
 

@@ -1,6 +1,5 @@
 package edu.example.demoproject.mappers;
 
-import edu.example.demoproject.dtos.cart.CartDto;
 import edu.example.demoproject.dtos.items.ItemDto;
 import edu.example.demoproject.dtos.product.ProductDto;
 import edu.example.demoproject.entities.Item;

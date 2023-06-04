@@ -1,6 +1,5 @@
 function goDetailsProduct(){
     var productId = (window.location.hash).replace("#",'');
-    alert(productId);
     fetchRequest(productId);
 }
 
@@ -44,19 +43,20 @@ function createDetailProductCard(data){
            <div class="col">
                 <div class="card-body building-list ps-3 pe-6">
                     <div class="icon-headline first">
-                        <h5>General builder</h5>
+                        <h5>${data.brand.name}</h5>
                     </div>
-                    <p class="building-text pt-2">${data.description}</p>
+                    <p class="building-text pt-2">${data.name}</p>
                 </div>
                 <div class="card-body building-list ps-3 pe-6">
                     <div class="icon-headline second">
-                        <h5 class="">House Extensions</h5>
+                        <h5 class="">${data.category.name}</h5>
                     </div>
-                    <p class="building-text pt-2">${data.description}</p>
+                    <p class="building-text pt-2">${data.currentPrice}</p>
                 </div>
                 <div class="card-body building-list ps-3 pe-6">
                     <div class="icon-headline third">
-                        <h5 class="">Refubishment</h5>
+                        <h5 class="">${data.initialPrice}</h5>
+                        <h5 class="">${data.newProduct}</h5>
                     </div>
                     <p class="building-text pt-2">${data.description}</p>
                 </div>
@@ -64,5 +64,18 @@ function createDetailProductCard(data){
 
 }
 
+window.addEventListener("load", (event) => {
+    event.preventDefault();
 
+});
+
+let openShopping = document.getElementById("shopping-header");
+let closeShopping = document.querySelector(".close");
+
+openShopping.addEventListener('click', ()=>{
+    body.classList.add('active');
+});
+closeShopping.addEventListener('click', ()=>{
+    body.classList.remove('active')
+})
 
