@@ -142,4 +142,8 @@ public class ProductService {
 
         return returnSearch(pageable, criteriaBuilder, criteriaQuery, from, select, finalPredicate);
     }
+
+    public Optional<Product> getProduct(Long id) {
+        return productRepository.findById(id);
+    }
 }

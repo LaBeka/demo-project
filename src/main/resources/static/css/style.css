@@ -22,3 +22,11 @@
 .products-block img, div{
     text-align: center;
 }
+
+#product-detail {
+    cursor: pointer;
+}
+#product-detail a{
+    text-decoration: none;
+    color: black;
+}

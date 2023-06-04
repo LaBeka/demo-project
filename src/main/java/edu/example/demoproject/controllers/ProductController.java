@@ -88,33 +88,18 @@ public class ProductController {
                 .body(resource);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/allCriteria")
     @CrossOrigin(origins = "http://localhost:63342")
-    public ResponseEntity getList(ProductSearchDto dto, Pageable pageable){
+    public ResponseEntity getListByCriteria(ProductSearchDto dto, Pageable pageable){
         PageImpl<Product> resultList = productService.rawSearch(dto, pageable);
-
-        if(resultList.getTotalElements() == 0){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);// error 404 not found any products
-        }
-        List<ProductDto> resultListDto =  resultList.stream()
-                .map(p -> this.productMapper.buildProduct(p))
-                .collect(Collectors.toList());
-
-        return new ResponseEntity(resultListDto, HttpStatus.OK);
+        return returnResponseEntity(resultList);
     }
-    @GetMapping("/inWord/{word}")
-    @CrossOrigin(origins = "http://localhost:63342")
-    public ResponseEntity getListInString(
-            @Valid @Size(min = 3) @PathVariable String word,
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "2") int size
-    ){
-        Pageable pageable = PageRequest.of(page, size);
-        PageImpl<Product> resultList = productService.searchInWord(word, pageable);
 
+    private ResponseEntity returnResponseEntity(PageImpl<Product> resultList) {
         if(resultList.getTotalElements() == 0){
             return new ResponseEntity(HttpStatus.NOT_FOUND);// error 404 not found any products
         }
+
         List<ProductDto> resultListDto =  resultList.stream()
                 .map(p -> this.productMapper.buildProduct(p))
                 .collect(Collectors.toList());
@@ -128,5 +113,35 @@ public class ProductController {
                 totalElements,
                 size1), HttpStatus.OK
         );
+    }
+
+    @GetMapping("/inWord/{word}")
+    @CrossOrigin(origins = "http://localhost:63342")
+    public ResponseEntity getListByWord(
+            @Valid @Size(min = 3) @PathVariable String word,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "2") int size
+    ){
+        Pageable pageable = PageRequest.of(page, size);
+        PageImpl<Product> resultList = productService.searchInWord(word, pageable);
+        return returnResponseEntity(resultList);
+    }
+
+    @GetMapping("/detail/{productId}")
+    @CrossOrigin(origins = "http://localhost:63342")
+    public ResponseEntity getProductID(
+            @PathVariable String productId
+    ) throws IOException {
+        Long id = 0L;
+        try{
+            id = Long.parseLong(productId);
+        } catch (Exception e){
+            e.getMessage();
+        }
+        Optional<Product> product = productService.getProduct(id);
+        if(!product.isPresent()){
+            return new ResponseEntity("Could not find this product", HttpStatus.NOT_FOUND); //404 error
+        }
+        return new ResponseEntity(this.productMapper.buildProduct(product.get()), HttpStatus.OK);
     }
 }

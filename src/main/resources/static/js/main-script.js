@@ -51,10 +51,8 @@ function createProductCard(product) {
     newRow.appendChild(newElem);
 
     newElem.innerHTML = `
-           <form id="addItemCart">
-                <input type="hidden" id="productId" name="productId" value="${product.id}"/>
-                <a href="#"/> 
-<!--               via body @RequestParam("productId") Long productId-->
+           <div id="product-detail" class="product-detail">
+           <a href="detail#${product.id}">
                 <div class="product-cart mb-4">
                     <img src="${product.image}" class="card-img-center" alt="${product.name}">
                     <div class="card-body">
@@ -66,7 +64,8 @@ function createProductCard(product) {
                         <p class="card-text">category: ${product.category.name}</p>                
                     </div>
                 </div>
-            </form>`;
+                </a>
+            </div>`;
 
     let productsBlock = document.querySelector(".products-block");
     let lastRow = productsBlock.querySelector(".row:last-of-type"); // находим последний ряд
