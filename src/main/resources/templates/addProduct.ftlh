@@ -8,10 +8,16 @@
     <title>Seller: Add Product</title>
     <link rel="stylesheet" href="css/addProduct.css">
     <link rel="stylesheet" href="css/signup.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.js"></script>
 
 </head>
 <body>
-
+<script>
+    $(()=>{
+        loadBrands();
+        loadCategories();
+    })
+</script>
 <img src="images/loader.gif" class="loader" alt="">
 
 <div class="alert-box">
@@ -38,7 +44,6 @@
                 </input>
                 <label for="first-file-upload-btn" class="upload-image"></label>
 
-
                 <input type="file" class="fileupload" id="second-file-upload-btn" hidden>
                 <label for="second-file-upload-btn" class="upload-image"></label>
 
@@ -64,15 +69,17 @@
     </div>
 
     <div class="product-price">
-        <input type="number" id="actual-price"  placeholder="actual price">
-
-        <input type="number" id="discount"  placeholder="discount">
+        <input type="number" name="initialPrice" id="actual-price"  placeholder="actual price">
+        <input type="number" name="discount" id="discount"  placeholder="discount">
         <input type="number" id="sell-price"  placeholder="sell price">
     </div>
 
-    <input type="nuber" id="stock" min="20" placeholder="item in stock (minimum 20)">
+    <input type="number" name="storageQty" id="stock" min="20" placeholder="item in stock (minimum 20)">
 
-    <textarea id="tags" placeholder="Enter categories, brands or any criterias for search"></textarea>
+<#--    <textarea id="tags" placeholder="Enter categories, brands or any criterias for search"></textarea>-->
+    <div class="brand-block" id="brand-block">
+
+    </div>
 
     <input type="checkbox" class="checkbox" id="tac" checked>
     <label for="tac">Clothing take 30% from your total sell</label>

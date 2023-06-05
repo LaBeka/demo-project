@@ -1,3 +1,39 @@
+function loadBrands(){
+    let brandsBlock = document.getElementsByClassName('.brand-block');
+     fetch('http://localhost:8081/brand/get')
+        .then(response => {
+            if(response.status == 404){
+                brandsBlock.innerText = "No products to show by this search";
+            } else if(response.status >= 400){
+                brandsBlock.innerText = "Bad response from server";
+            }
+            return response.json()
+        })
+            .then(data => {
+                brandsBlock.innerHTML = '';
+                data.forEach(brand => {
+                    drawBrandName(brand);
+                });
+            })
+            .catch(error => {
+                brandsBlock.innerText = "Bad response from server";
+            });
+}
+function drawBrandName(brand){
+    console.log(brand);
+    let brandsBlock = document.getElementById('brand-block');
+    let brands = document.createElement('div');
+    brands.classList.add("brands");
+    brands.innerHTML = `
+        <p class="brandName">${brand.name}</p>
+        <input type="checkbox" class="brand-checkbox" id="${brand.id}" value="${brand}">
+    `;
+    brandsBlock.appendChild(brands);
+}
+function loadCategories(){
+
+}
+
 // for later version i need here to get user from local storage if there is a user then i will continue
 //let user = JSON.parse(sessionStorage.user || null
 //if user is present
