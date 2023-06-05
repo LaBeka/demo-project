@@ -15,4 +15,8 @@ public class MainController {
     public String getProductDetailPage(){
         return "detail";
     }
+    @GetMapping("/addProduct")
+    public String getAddProdPage(){
+        return "addProduct";
+    }
 }
