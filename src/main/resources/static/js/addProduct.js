@@ -3,35 +3,63 @@ function loadBrands(){
      fetch('http://localhost:8081/brand/get')
         .then(response => {
             if(response.status == 404){
-                brandsBlock.innerText = "No products to show by this search";
+                brandsBlock.innerText = "No brands to show by this search";
             } else if(response.status >= 400){
                 brandsBlock.innerText = "Bad response from server";
             }
             return response.json()
         })
-            .then(data => {
-                brandsBlock.innerHTML = '';
-                data.forEach(brand => {
-                    drawBrandName(brand);
-                });
-            })
-            .catch(error => {
-                brandsBlock.innerText = "Bad response from server";
+        .then(data => {
+            brandsBlock.innerHTML = '';
+            data.forEach(brand => {
+                drawBrandName(brand);
             });
+        })
+        .catch(error => {
+            brandsBlock.innerText = "Bad response from server";
+        });
 }
 function drawBrandName(brand){
-    console.log(brand);
     let brandsBlock = document.getElementById('brand-block');
     let brands = document.createElement('div');
     brands.classList.add("brands");
     brands.innerHTML = `
         <p class="brandName">${brand.name}</p>
-        <input type="checkbox" class="brand-checkbox" id="${brand.id}" value="${brand}">
+        <input type="radio" name="brand" class="brand-checkbox" id="${brand.id}" value="${brand}">
     `;
     brandsBlock.appendChild(brands);
 }
-function loadCategories(){
 
+function loadCategories(){
+    let catBlock = document.getElementsByClassName('.category-block');
+    fetch('http://localhost:8081/category/get')
+        .then(response => {
+            if(response.status == 404){
+                catBlock.innerText = "No category to show by this search";
+            } else if(response.status >= 400){
+                catBlock.innerText = "Bad response from server";
+            }
+            return response.json()
+        })
+        .then(data => {
+            catBlock.innerHTML = '';
+            data.forEach(cat => {
+                drawCatName(cat);
+            });
+        })
+        .catch(error => {
+            catBlock.innerText = "Bad response from server";
+        });
+}
+function drawCatName(cat){
+    let catBlock = document.getElementById('category-block');
+    let category = document.createElement('div');
+    category.classList.add("categories");
+    category.innerHTML = `
+        <p class="brandName">${cat.name}</p>
+        <input type="radio" name="category" class="category-checkbox" id="${cat.id}" value="${cat}">
+    `;
+    catBlock.appendChild(category);
 }
 
 // for later version i need here to get user from local storage if there is a user then i will continue
@@ -83,3 +111,7 @@ var loadImage = function(event) {
 //     let image = inputFile.files[0];
 //     label.style.backgroundImage = image;
 // };
+
+const formData = document.getElementsByClassName('.main-form');
+
+formData.onsubmit =

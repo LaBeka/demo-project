@@ -76,10 +76,11 @@
 
     <input type="number" name="storageQty" id="stock" min="20" placeholder="item in stock (minimum 20)">
 
-<#--    <textarea id="tags" placeholder="Enter categories, brands or any criterias for search"></textarea>-->
-    <div class="brand-block" id="brand-block">
+    <p>All Brands available</p>
+    <div class="brand-block" id="brand-block"></div>
 
-    </div>
+    <p>All Categories available</p>
+    <div class="category-block" id="category-block"></div>
 
     <input type="checkbox" class="checkbox" id="tac" checked>
     <label for="tac">Clothing take 30% from your total sell</label>
