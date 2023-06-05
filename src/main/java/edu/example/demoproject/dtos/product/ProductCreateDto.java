@@ -35,7 +35,7 @@ public class ProductCreateDto {
     @Positive(message = "Quantity has negative value or zero")
     private Integer storageQty;//
 
-    @NotEmpty( message="Discount is empty")
+    @NotNull( message="Discount is null")
     @Digits(integer = 3, fraction = 0, message = "Discount must be a valid number with a maximum of 3 integral digits and 2 fractional digits")
     @Positive(message = "Discount has negative value or zero")
     private Integer discount;//

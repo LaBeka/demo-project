@@ -25,7 +25,7 @@ function drawBrandName(brand){
     brands.classList.add("brands");
     brands.innerHTML = `
         <p class="brandName">${brand.name}</p>
-        <input type="radio" name="brand" class="brand-checkbox" id="${brand.id}" value="${brand}">
+        <input type="radio" name="brand" class="brand-checkbox" id="brand-${brand.id}" value="${brand.id}">
     `;
     brandsBlock.appendChild(brands);
 }
@@ -57,7 +57,7 @@ function drawCatName(cat){
     category.classList.add("categories");
     category.innerHTML = `
         <p class="brandName">${cat.name}</p>
-        <input type="radio" name="category" class="category-checkbox" id="${cat.id}" value="${cat}">
+        <input type="radio" name="category" class="category-checkbox" id="category-${cat.id}" value="${cat.id}">
     `;
     catBlock.appendChild(category);
 }
@@ -112,6 +112,52 @@ var loadImage = function(event) {
 //     label.style.backgroundImage = image;
 // };
 
-const formData = document.getElementsByClassName('.main-form');
+const data = document.getElementsByClassName('.main-form');
 
-formData.onsubmit =
+function addProduct () {
+    const data = new FormData();
+
+    const name = document.getElementById('product-name').value;
+    data.append('name', name);
+
+    const description = document.getElementById('short-des').value;
+    data.append('description', description);
+    const image = document.getElementById('first-file-upload-btn').files[0];
+    data.append('image', image);
+    const initialPrice = document.getElementById('actual-price').value;
+    data.append('initialPrice', initialPrice);
+    const discount = document.getElementById('discount').value;
+    data.append('discount', discount);
+    const stock = document.getElementById('stock').value;
+    data.append('storageQty', stock);
+    const brand = document.getElementsByName('brand');
+    brand.forEach(el => {
+        if(el.checked){
+            data.append('brand', el.value)
+        }
+    })
+    const category = document.getElementsByName('category');
+    category.forEach(el=>{
+        if(el.checked){
+            data.append('category', el.value)
+        }
+    })
+
+    fetch('http://localhost:8081/product/add', {
+        method: 'POST',
+        body: data
+    })
+        .then(response => {
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json()
+        })
+        .then(data => {
+            console.log(data);
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}

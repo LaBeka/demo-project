@@ -26,7 +26,7 @@
 </div>
 
 <img src="images/dark-logo.png" class="logo" alt="">
-<form class="main-form">
+<div class="form">
     <input type="text" id="product-name" name="name" placeholder="product name">
     <input type="text" id="short-des" name="description" placeholder="short line about product">
     <textarea id="des" placeholder="detail description"></textarea>
@@ -86,10 +86,10 @@
     <label for="tac">Clothing take 30% from your total sell</label>
 
     <div class="buttons">
-        <button type="submit" class="btn" id="add-btn">Add product</button>
-        <button type="submit" class="btn" id="save-btn">save draft</button>
+        <button type="button" onclick="addProduct()" class="btn" id="add-btn">Add product</button>
+        <button type="button" class="btn" id="save-btn">save draft</button>
     </div>
-</form>
+</div>
 
 <script src="js/addProduct.js"></script>
 <script src="js/token.js"></script>
