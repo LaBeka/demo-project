@@ -32,4 +32,11 @@ var loadImage = function(event) {
     }
     outputImage.setAttribute("style", "width: 100px; height: 100px");
 };
-main-form.
+
+// var loadImage = function(event) {
+//     const inputFile = document.getElementById('first-file-upload-btn');
+//     let label = document.querySelector(`label[for=${inputFile.id}]`)
+//     let image = inputFile.files[0];
+//     label.style.backgroundImage = image;
+//
+// };
