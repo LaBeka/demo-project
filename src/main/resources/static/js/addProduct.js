@@ -24,19 +24,26 @@ sellingPrice.addEventListener('input', ()=> {
 })
 //upload image DISPLAY
 var loadImage = function(event) {
-    const inputFile = document.getElementById('first-file-upload-btn');
+    const inputFile = document.getElementById('first-file-upload-btn').files[0];
     let outputImage = document.getElementById('displayFirstImage');
-    outputImage.src = URL.createObjectURL(inputFile.files[0]);
+    outputImage.src = URL.createObjectURL(inputFile);
     outputImage.onload = function() {
         URL.revokeObjectURL(outputImage.src) // free memory
     }
     outputImage.setAttribute("style", "width: 100px; height: 100px");
+
+    let displayMainFrame = document.getElementById('displayMainFrame');
+    displayMainFrame.src = URL.createObjectURL(inputFile);
+    displayMainFrame.onload = function() {
+        URL.revokeObjectURL(displayMainFrame.src) // free memory
+    }
+    displayMainFrame.setAttribute("style", "width: 500px; height: 500px");
+
 };
 
-// var loadImage = function(event) {
+// var loadImage = function(event) {    for further development with AWS S3
 //     const inputFile = document.getElementById('first-file-upload-btn');
 //     let label = document.querySelector(`label[for=${inputFile.id}]`)
 //     let image = inputFile.files[0];
 //     label.style.backgroundImage = image;
-//
 // };

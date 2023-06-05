@@ -21,17 +21,19 @@
 
 <img src="images/dark-logo.png" class="logo" alt="">
 <form class="main-form">
-    <input type="text" id="product-name"  placeholder="product name">
-    <input type="text" id="short-des" placeholder="short line about product">
+    <input type="text" id="product-name" name="name" placeholder="product name">
+    <input type="text" id="short-des" name="description" placeholder="short line about product">
     <textarea id="des" placeholder="detail description"></textarea>
 <#--    product image-->
     <div class="product-info">
-        <div class="product-image"><p class="text">product image</p></div>
+        <div class="product-image">
+            <img id="displayMainFrame" alt="product image" style="display: none"/>
+            <p class="text"></p></div>
         <div class="upload-image-sec">
         <#--        upload inputs-->
             <p class="text"><img src="images/camera.png" alt="">Upload image </p>
             <div class="upload-catalogue">
-                <input type="file" class="fileupload" id="first-file-upload-btn" name="photo" accept="image/*" onchange="loadImage(this)" hidden>
+                <input type="file" class="fileupload" id="first-file-upload-btn" name="image" accept="image/*" onchange="loadImage(this)" hidden>
                     <img id="displayFirstImage" alt="your image" style="display: none"/>
                 </input>
                 <label for="first-file-upload-btn" class="upload-image"></label>
