@@ -2,7 +2,7 @@ package edu.example.demoproject.services;
 
 import edu.example.demoproject.dtos.product.ProductSearchDto;
 import edu.example.demoproject.dtos.product.ProductCreateDto;
-import edu.example.demoproject.entities.Product;
+import edu.example.demoproject.entities.ProductEntity;
 import edu.example.demoproject.repos.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -29,11 +29,11 @@ public class ProductService {
     private final EntityManager enManager;
 
     public boolean isAllowedAddNewProd(ProductCreateDto dto){
-        Optional<Product> findIdenticalProduct = productRepository.findByNameAndBrand(dto.getName(), dto.getBrand());
+        Optional<ProductEntity> findIdenticalProduct = productRepository.findByNameAndBrand(dto.getName(), dto.getBrand());
         return findIdenticalProduct.isPresent();
     }
 
-    public Optional<Product> saveProduct(ProductCreateDto dto) throws IOException {
+    public Optional<ProductEntity> saveProduct(ProductCreateDto dto) throws IOException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
 
         MultipartFile photo = dto.getImage();
@@ -46,7 +46,7 @@ public class ProductService {
         Path newFilePath = mainDirectoryForProdImages.resolve(newName); //ad this file name
         photo.transferTo(newFilePath);
 
-        Product product = Product.builder()
+        ProductEntity productEntity = ProductEntity.builder()
                 .name(dto.getName())
                 .image(newName)
                 .description(dto.getDescription())
@@ -58,17 +58,17 @@ public class ProductService {
                 .category(dto.getCategory())
                 .build();
 
-        Optional<Product> saved = Optional.of(productRepository.save(product));
+        Optional<ProductEntity> saved = Optional.of(productRepository.save(productEntity));
         return saved;
     }
 
-    public Optional<Product> findProductById(Long id) {
+    public Optional<ProductEntity> findProductById(Long id) {
         return productRepository.findById(id);
     }
 
     private Long getTotalCount(CriteriaBuilder criteriaBuilder, Predicate predicate){
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-        Root<Product> root = criteriaQuery.from(Product.class);
+        Root<ProductEntity> root = criteriaQuery.from(ProductEntity.class);
         criteriaQuery.select(criteriaBuilder.count(root));
 
         criteriaQuery.where(predicate);
@@ -84,25 +84,25 @@ public class ProductService {
         return criteriaBuilder.lower(field);
     }
 
-    private PageImpl<Product> returnSearch(Pageable pageable, CriteriaBuilder criteriaBuilder, CriteriaQuery<Product> criteriaQuery,
-                                           Root<Product> from, CriteriaQuery<Product> select, Predicate predicates) {
+    private PageImpl<ProductEntity> returnSearch(Pageable pageable, CriteriaBuilder criteriaBuilder, CriteriaQuery<ProductEntity> criteriaQuery,
+                                           Root<ProductEntity> from, CriteriaQuery<ProductEntity> select, Predicate predicates) {
         criteriaQuery.orderBy(criteriaBuilder.desc(from.get("currentPrice")));
-        TypedQuery<Product> typedQuery = enManager.createQuery(select);
+        TypedQuery<ProductEntity> typedQuery = enManager.createQuery(select);
 
         typedQuery.setFirstResult(Math.toIntExact(pageable.getOffset()));
         typedQuery.setMaxResults(pageable.getPageSize());
 
-        List<Product> resultList = typedQuery.getResultList();
-        return new PageImpl<Product>(resultList, pageable, getTotalCount(criteriaBuilder, predicates));
+        List<ProductEntity> resultList = typedQuery.getResultList();
+        return new PageImpl<ProductEntity>(resultList, pageable, getTotalCount(criteriaBuilder, predicates));
     }
 
-    public PageImpl<Product> rawSearch(ProductSearchDto dto, Pageable pageable) {
+    public PageImpl<ProductEntity> rawSearch(ProductSearchDto dto, Pageable pageable) {
         CriteriaBuilder criteriaBuilder = enManager.getCriteriaBuilder();
-        CriteriaQuery<Product> criteriaQuery =
-                criteriaBuilder.createQuery(Product.class);
+        CriteriaQuery<ProductEntity> criteriaQuery =
+                criteriaBuilder.createQuery(ProductEntity.class);
 
-        Root<Product> from = criteriaQuery.from(Product.class);
-        CriteriaQuery<Product> select = criteriaQuery.select(from);
+        Root<ProductEntity> from = criteriaQuery.from(ProductEntity.class);
+        CriteriaQuery<ProductEntity> select = criteriaQuery.select(from);
         Predicate predicate = null;
 
         if (dto.getBrand() != null) {
@@ -123,11 +123,11 @@ public class ProductService {
         criteriaQuery.where(predicate);
         return returnSearch(pageable, criteriaBuilder, criteriaQuery, from, select, null);
     }
-    public PageImpl<Product> searchInWord(String word, Pageable pageable) {
+    public PageImpl<ProductEntity> searchInWord(String word, Pageable pageable) {
         CriteriaBuilder criteriaBuilder = enManager.getCriteriaBuilder();
-        CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
-        Root<Product> from = criteriaQuery.from(Product.class);
-        CriteriaQuery<Product> select = criteriaQuery.select(from);
+        CriteriaQuery<ProductEntity> criteriaQuery = criteriaBuilder.createQuery(ProductEntity.class);
+        Root<ProductEntity> from = criteriaQuery.from(ProductEntity.class);
+        CriteriaQuery<ProductEntity> select = criteriaQuery.select(from);
 
         Expression<String> lowSearchWord = getLoweredWord(word, criteriaBuilder);
         Expression<String> lowFieldName = getLoweredField(from.get("name"), criteriaBuilder);
@@ -142,7 +142,7 @@ public class ProductService {
         return returnSearch(pageable, criteriaBuilder, criteriaQuery, from, select, finalPredicate);
     }
 
-    public Optional<Product> getProduct(Long id) {
+    public Optional<ProductEntity> getProduct(Long id) {
         return productRepository.findById(id);
     }
 }

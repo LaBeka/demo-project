@@ -27,13 +27,13 @@
 
 <img src="images/dark-logo.png" class="logo" alt="">
 <div class="form">
-    <input type="text" id="product-name" name="name" placeholder="product name">
-    <input type="text" id="short-des" name="description" placeholder="short line about product">
+    <input type="text" id="productEntity-name" name="name" placeholder="productEntity name">
+    <input type="text" id="short-des" name="description" placeholder="short line about productEntity">
     <textarea id="des" placeholder="detail description"></textarea>
-<#--    product image-->
-    <div class="product-info">
-        <div class="product-image">
-            <img id="displayMainFrame" alt="product image" style="display: none"/>
+<#--    productEntity image-->
+    <div class="productEntity-info">
+        <div class="productEntity-image">
+            <img id="displayMainFrame" alt="productEntity image" style="display: none"/>
             <p class="text"></p></div>
         <div class="upload-image-sec">
         <#--        upload inputs-->
@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    <div class="product-price">
+    <div class="productEntity-price">
         <input type="number" name="initialPrice" id="actual-price"  placeholder="actual price">
         <input type="number" name="discount" id="discount"  placeholder="discount">
         <input type="number" id="sell-price"  placeholder="sell price">
@@ -86,7 +86,7 @@
     <label for="tac">Clothing take 30% from your total sell</label>
 
     <div class="buttons">
-        <button type="button" onclick="addProduct()" class="btn" id="add-btn">Add product</button>
+        <button type="button" onclick="addProduct()" class="btn" id="add-btn">Add productEntity</button>
         <button type="button" class="btn" id="save-btn">save draft</button>
     </div>
 </div>

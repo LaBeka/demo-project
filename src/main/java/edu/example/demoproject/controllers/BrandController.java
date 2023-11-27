@@ -2,14 +2,10 @@ package edu.example.demoproject.controllers;
 
 
 import edu.example.demoproject.dtos.brand.BrandDto;
-import edu.example.demoproject.dtos.product.ProductSearchDto;
 import edu.example.demoproject.entities.Brand;
-import edu.example.demoproject.entities.Product;
 import edu.example.demoproject.mappers.BrandMapper;
 import edu.example.demoproject.services.BrandService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

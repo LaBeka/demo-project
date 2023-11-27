@@ -4,7 +4,7 @@ import edu.example.demoproject.dtos.PageDto;
 import edu.example.demoproject.dtos.product.ProductDto;
 import edu.example.demoproject.dtos.product.ProductSearchDto;
 import edu.example.demoproject.dtos.product.ProductCreateDto;
-import edu.example.demoproject.entities.Product;
+import edu.example.demoproject.entities.ProductEntity;
 import edu.example.demoproject.mappers.ProductMapper;
 import edu.example.demoproject.services.ProductService;
 import lombok.AllArgsConstructor;
@@ -46,12 +46,12 @@ public class ProductController {
 
         boolean allowedAddNewProd = productService.isAllowedAddNewProd(productCreateDto);
         if(allowedAddNewProd){
-            return new ResponseEntity<>(HttpStatus.CONFLICT); //catch in js 409 to say Product with this name and brand already in use, do you want to add it anyway?
+            return new ResponseEntity<>(HttpStatus.CONFLICT); //catch in js 409 to say ProductEntity with this name and brand already in use, do you want to add it anyway?
         }
 
-        Optional<Product> product  = productService.saveProduct(productCreateDto);
+        Optional<ProductEntity> product  = productService.saveProduct(productCreateDto);
         if(product.isEmpty()){
-            return new ResponseEntity("No product created", HttpStatus.BAD_GATEWAY);//error 502 for some reason product is not saved, try again
+            return new ResponseEntity("No productEntity created", HttpStatus.BAD_GATEWAY);//error 502 for some reason productEntity is not saved, try again
         }
         return new ResponseEntity(this.productMapper.buildProduct(product.get()), HttpStatus.OK);
     }
@@ -63,11 +63,11 @@ public class ProductController {
         try{
             parsedID = Long.parseLong(productId);
         } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE); //eror 406 couldnt find product
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE); //eror 406 couldnt find productEntity
         }
-        Optional<Product> foundProduct = productService.findProductById(parsedID);
+        Optional<ProductEntity> foundProduct = productService.findProductById(parsedID);
         if(foundProduct.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); //eror 404 couldnt find product
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); //eror 404 couldnt find productEntity
         }
 
         Path userImageDirectory = Paths.get("storage", foundProduct.get().getImage());
@@ -91,13 +91,13 @@ public class ProductController {
     @GetMapping("/allCriteria")
     @CrossOrigin(origins = "http://localhost:63342")
     public ResponseEntity getListByCriteria(ProductSearchDto dto, Pageable pageable){
-        PageImpl<Product> resultList = productService.rawSearch(dto, pageable);
+        PageImpl<ProductEntity> resultList = productService.rawSearch(dto, pageable);
         return returnResponseEntity(resultList);
     }
 
-    private ResponseEntity returnResponseEntity(PageImpl<Product> resultList) {
+    private ResponseEntity returnResponseEntity(PageImpl<ProductEntity> resultList) {
         if(resultList.getTotalElements() == 0){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);// error 404 not found any products
+            return new ResponseEntity(HttpStatus.NOT_FOUND);// error 404 not found any productEntities
         }
 
         List<ProductDto> resultListDto =  resultList.stream()
@@ -123,7 +123,7 @@ public class ProductController {
             @RequestParam(required = false, defaultValue = "2") int size
     ){
         Pageable pageable = PageRequest.of(page, size);
-        PageImpl<Product> resultList = productService.searchInWord(word, pageable);
+        PageImpl<ProductEntity> resultList = productService.searchInWord(word, pageable);
         return returnResponseEntity(resultList);
     }
 
@@ -138,9 +138,9 @@ public class ProductController {
         } catch (Exception e){
             e.getMessage();
         }
-        Optional<Product> product = productService.getProduct(id);
+        Optional<ProductEntity> product = productService.getProduct(id);
         if(!product.isPresent()){
-            return new ResponseEntity("Could not find this product", HttpStatus.NOT_FOUND); //404 error
+            return new ResponseEntity("Could not find this productEntity", HttpStatus.NOT_FOUND); //404 error
         }
         return new ResponseEntity(this.productMapper.buildProduct(product.get()), HttpStatus.OK);
     }

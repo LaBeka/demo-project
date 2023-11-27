@@ -12,7 +12,7 @@ public class ItemMapper {
     final private ProductMapper productMapper;
     public ItemDto buildItem(Item item){
         ProductDto productDto = this.productMapper.buildProduct(
-                item.getProduct());
+                item.getProductEntity());
 
         return ItemDto.builder()
                 .id(item.getId())

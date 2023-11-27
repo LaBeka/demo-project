@@ -11,8 +11,8 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Setter
 @Getter
-@Table(name="products")
-public class Product {
+@Table(name="productEntities")
+public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
@@ -49,6 +49,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    // SELECT p from ProductEntity p inner join CategoryEntity c on p.categoryId = c.id where c.name = :name;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private Set<Item> items;

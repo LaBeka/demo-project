@@ -79,7 +79,7 @@
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="js/main-script.js"></script>
-<script src="js/product-detail.js"></script>
+<script src="js/productEntity-detail.js"></script>
 
 </body>
 </html>

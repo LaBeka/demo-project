@@ -11,17 +11,17 @@ import javax.validation.constraints.*;
 
 @Data
 public class ProductCreateDto {
-    @NotNull( message="Product name is null")
-    @NotBlank( message="Product name is blank")
-    @Size(min = 1, max = 16, message="Please provide a valid product name length")
+    @NotNull( message="ProductEntity name is null")
+    @NotBlank( message="ProductEntity name is blank")
+    @Size(min = 1, max = 16, message="Please provide a valid productEntity name length")
     private String name;//
 
     @MultipartFileSizeValid(maxSizeInMB = 10, message = "Size of picture should be  between 5 to 150 mb")
     private MultipartFile image;//
 
-    @NotNull( message="Product description is null")
-    @NotBlank( message="Product description is blank")
-    @Size(min = 1, max = 100, message="Please provide a valid product description length")
+    @NotNull( message="ProductEntity description is null")
+    @NotBlank( message="ProductEntity description is blank")
+    @Size(min = 1, max = 100, message="Please provide a valid productEntity description length")
     @JsonProperty(value = "description")
     private String description;//
 

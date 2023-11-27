@@ -19,6 +19,7 @@ import java.util.Set;
 @Entity
 @Table(name="users")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(length = 128, name="user_id")
