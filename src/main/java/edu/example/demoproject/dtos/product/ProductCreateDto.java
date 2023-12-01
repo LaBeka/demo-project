@@ -1,11 +1,7 @@
 package edu.example.demoproject.dtos.product;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import edu.example.demoproject.customValidator.MultipartFileSizeValid;
-import edu.example.demoproject.entities.Brand;
-import edu.example.demoproject.entities.Category;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 
@@ -15,9 +11,6 @@ public class ProductCreateDto {
     @NotBlank( message="ProductEntity name is blank")
     @Size(min = 1, max = 16, message="Please provide a valid productEntity name length")
     private String name;//
-
-    @MultipartFileSizeValid(maxSizeInMB = 10, message = "Size of picture should be  between 5 to 150 mb")
-    private MultipartFile image;//
 
     @NotNull( message="ProductEntity description is null")
     @NotBlank( message="ProductEntity description is blank")
@@ -42,10 +35,10 @@ public class ProductCreateDto {
 
     @NotNull( message="Brand is null")
     @JsonProperty(value = "brand")
-    private Brand brand;
+    private String brand;
 
     @NotNull( message="Category is null")
     @JsonProperty(value = "category")
-    private Category category;
+    private String category;
 
 }

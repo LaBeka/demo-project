@@ -1,7 +1,7 @@
 package edu.example.demoproject.repos;
 
-import edu.example.demoproject.entities.User;
+import edu.example.demoproject.entities.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public class UserRepository extends BaseRepository<UserEntity> {
 }

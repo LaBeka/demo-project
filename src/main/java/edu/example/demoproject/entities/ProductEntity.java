@@ -11,7 +11,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Setter
 @Getter
-@Table(name="productEntities")
+@Table(name="product_entities")
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +20,6 @@ public class ProductEntity {
 
     @Column(length = 128, name = "name")
     private String name;
-
-    @Column(length = 128, name = "image")
-    private String image;
 
     @Column(name = "description")
     private String description;
@@ -42,16 +39,10 @@ public class ProductEntity {
     @Column(name = "new_product")
     private boolean newProduct;
 
-    @ManyToOne
-    @JoinColumn(name = "brand_id")
-    private Brand brand;
+    @Column(name = "brand_name")
+    private String brand;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @Column(name = "category_name")
+    private String category;
 
-    // SELECT p from ProductEntity p inner join CategoryEntity c on p.categoryId = c.id where c.name = :name;
-
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private Set<Item> items;
 }

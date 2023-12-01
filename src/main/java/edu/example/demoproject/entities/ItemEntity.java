@@ -11,21 +11,19 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@Table(name="cart_items")
-public class Item {
+@Table(name="cart_item_entity")
+public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="cart_id")
-    private Cart cart;
+    @Column(name="cart_id")
+    private Long cartId;
 
-    @ManyToOne
-    @JoinColumn(name="product_id")
-    private ProductEntity productEntity;
+    @Column(name = "product_id")
+    private Long productId;
 
-    @Column
+    @Column(name = "quantity")
     private int qty;
 }

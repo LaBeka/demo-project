@@ -3,7 +3,6 @@ package edu.example.demoproject.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 
 @Builder(toBuilder = true)
@@ -12,17 +11,13 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@Table(name="carts")
-public class Cart {
+@Table(name="cart_entity")
+public class CartEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToMany(mappedBy = "cart")
-    private Set<Item> items;
+    @Column(name = "user_id")
+    private Long userId;
 }
