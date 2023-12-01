@@ -17,7 +17,8 @@ public class CartService {
 
     @Transactional
     public CartDto createCart(Long id) {
-        return cartRepository.create(id);
+        cartRepository.create(id);
+        return getCartByUserId(id);
     }
 
     @Transactional

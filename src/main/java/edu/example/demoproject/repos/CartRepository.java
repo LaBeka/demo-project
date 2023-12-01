@@ -19,12 +19,12 @@ public class CartRepository extends BaseRepository<CartEntity> {
     }
 
     public void create(Long id) {
-        em.createNativeQuery("""
-                insert into new edu.example.demoproject.etities.CartEntity(
-                userId) VALUES (:userId)
-                """, CartEntity.class)
-                .setParameter("userId", id)
-                .executeUpdate();
+//        em.createNativeQuery("""
+//                insert into new edu.example.demoproject.etities.CartEntity(
+//                userId) VALUES (:userId)
+//                """, CartEntity.class)
+//                .setParameter("userId", id)
+//                .executeUpdate();
     }
 
     public void delete(Long id) {
