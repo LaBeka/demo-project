@@ -5,7 +5,12 @@ import edu.example.demoproject.dtos.picture.PictureDto;
 import edu.example.demoproject.entities.PictureEntity;
 import edu.example.demoproject.mappers.PictureMapper;
 import edu.example.demoproject.repos.PictureRepository;
-import lombok.AllArgsConstructor;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import javax.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -14,14 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PictureService {
     private final PictureRepository pictureRepository;
     private final PictureMapper pictureMapper;
