@@ -14,7 +14,7 @@ public class CartRepository extends BaseRepository<CartEntity> {
                               from CartEntity c
                               where c.userId = :id
                               """, CartDto.class)
-                .setParameter("userId", id)
+                .setParameter("id", id)
                 .getSingleResult();
     }
 
