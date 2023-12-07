@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping(CartApi.DICTS_API_PATH)
 @Tag(name = "Методы для работы с корзиной", description = CartApi.DICTS_API_PATH)
 public interface CartApi {
@@ -13,7 +15,7 @@ public interface CartApi {
 
     @GetMapping("/{id}")
     @Operation(summary = "Получение корзины по айди пользователя")
-    CartDto getCartByUserId(@PathVariable Long id);
+    List<CartDto> getCartByUserId(@PathVariable Long id);
 
     @PostMapping("/{id}")
     @Operation(summary = "Создание новой корзины по айди пользователя")

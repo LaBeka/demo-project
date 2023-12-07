@@ -1,11 +1,18 @@
 package edu.example.demoproject.repos;
 
 import edu.example.demoproject.dtos.product.ProductCreateDto;
+import edu.example.demoproject.dtos.product.ProductCriteriaDto;
 import edu.example.demoproject.dtos.product.ProductDto;
 import edu.example.demoproject.entities.ProductEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,45 +56,89 @@ public class ProductRepository extends BaseRepository<ProductEntity> {
     }
 
 
-    public void updateProduct(Long id, ProductCreateDto dto) {
+    public void updateProduct(Long id, ProductEntity dto) {
         StringBuilder querySb = new StringBuilder("""
                                                   update ProductEntity s
                                                   set 
                                                   """);
         Map<String, Object> params = new HashMap<>();
-        if (dto.getName() != null) {
-            querySb.append("s.name = :name");
-            params.put("name", dto.getName());
-        }
-        if (dto.getDescription() != null) {
-            querySb.append(", s.description = :description");
-            params.put("description", dto.getDescription());
-        }
-        if (dto.getInitialPrice() != null) {
-            querySb.append(", s.initialPrice = :initialPrice");
-            params.put("initialPrice", dto.getInitialPrice());
-        }
-        if (dto.getStorageQty() != null) {
-            querySb.append(", s.storageQty = :storageQty");
-            params.put("storageQty", dto.getStorageQty());
-        }
-        if (dto.getDiscount() != null) {
-            querySb.append(", s.discount = :discount");
-            params.put("discount", dto.getDiscount());
-        }
-        if (dto.getBrand() != null) {
-            querySb.append(", s.genre = :genre");
-            params.put("genre", dto.getBrand());
-        }
-        if (dto.getCategory() != null) {
-            querySb.append(", s.stage = :stage");
-            params.put("stage", dto.getCategory());
-        }
+
+        querySb.append("s.name = :name");
+        params.put("name", dto.getName());
+        querySb.append(", s.description = :description");
+        params.put("description", dto.getDescription());
+        querySb.append(", s.initialPrice = :initialPrice");
+        params.put("initialPrice", dto.getInitialPrice());
+        querySb.append(", s.currentPrice = :currentPrice");
+        params.put("currentPrice", dto.getCurrentPrice());
+        querySb.append(", s.storageQty = :storageQty");
+        params.put("storageQty", dto.getStorageQty());
+        querySb.append(", s.discount = :discount");
+        params.put("discount", dto.getDiscount());
+        querySb.append(", s.brand = :brand");
+        params.put("brand", dto.getBrand());
+        querySb.append(", s.category = :category");
+        params.put("category", dto.getCategory());
+
         querySb.append(" where s.id =:id");
         params.put("id", id);
 
         Query query = em.createQuery(querySb.toString());
         params.forEach(query::setParameter);
+        query.executeUpdate();
+    }
+
+    public List<ProductEntity> findByCriteria(ProductCriteriaDto dto) {
+
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<ProductEntity> criteriaQuery = criteriaBuilder.createQuery(ProductEntity.class);
+        Root<ProductEntity> from = criteriaQuery.from(ProductEntity.class);
+        CriteriaQuery<ProductEntity> select = criteriaQuery.select(from);
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (!dto.getName().isBlank() || !dto.getName().isEmpty()) {
+            Predicate predicate = criteriaBuilder.like(criteriaBuilder.lower(from.get("name")), "%" + dto.getName().toLowerCase() + "%");
+            criteriaQuery.where(predicate);
+            predicates.add(predicate);
+        }
+        if (!dto.getDescription().isBlank() || !dto.getDescription().isEmpty()) {
+            Predicate predicate = criteriaBuilder.like(criteriaBuilder.lower(from.get("description")), "%" + dto.getDescription().toLowerCase() + "%");
+            criteriaQuery.where(predicate);
+            predicates.add(predicate);
+        }
+
+        if (dto.isNewProduct()) {
+            Predicate predicate = criteriaBuilder.equal(from.get("newProduct"), dto.isNewProduct());
+            criteriaQuery.where(predicate);
+            predicates.add(predicate);
+        }
+
+        if (!dto.getBrand().isBlank() || !dto.getBrand().isEmpty()) {
+            Predicate predicate = criteriaBuilder.equal(criteriaBuilder.lower(from.get("brand")), dto.getBrand().toLowerCase());
+        criteriaQuery.where(predicate);
+        predicates.add(predicate);
+        }
+
+        if (!dto.getCategory().isBlank() || !dto.getCategory().isEmpty()) {
+            Predicate predicate = criteriaBuilder.equal(criteriaBuilder.lower(from.get("category")), dto.getCategory().toLowerCase());
+            criteriaQuery.where(predicate);
+            predicates.add(predicate);
+        }
+
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
+        criteriaQuery.where(criteriaBuilder.or(predicates.toArray(Predicate[]::new)));
+        TypedQuery<ProductEntity> typedQuery = em.createQuery(select);
+
+        return typedQuery.getResultList();
+    }
+
+    public void delete(Long id) {
+        Query query = em.createQuery("""
+                              delete
+                              from ProductEntity p
+                              where p.id = :id
+                              """)
+                .setParameter("id", id);
         query.executeUpdate();
     }
 }

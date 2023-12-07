@@ -6,13 +6,15 @@ import edu.example.demoproject.services.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class CartController implements CartApi {
     private final CartService cartService;
 
     @Override
-    public CartDto getCartByUserId(Long id) {
+    public List<CartDto> getCartByUserId(Long id) {
         return cartService.getCartByUserId(id);
     }
 

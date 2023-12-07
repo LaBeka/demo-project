@@ -7,7 +7,7 @@ import javax.validation.constraints.*;
 
 @Data
 public class ProductCreateDto {
-    @NotNull( message="ProductEntity name is null")
+    @NotNull( message="Product name is null")
     @NotBlank( message="ProductEntity name is blank")
     @Size(min = 1, max = 16, message="Please provide a valid productEntity name length")
     private String name;//
@@ -19,12 +19,12 @@ public class ProductCreateDto {
     private String description;//
 
     @NotNull( message="Price is null")
-    @Digits(integer = 3, fraction = 2, message = "Price digits must be a valid number with a maximum of 3 integral digits and 2 fractional digits")
+    @Digits(integer = 6, fraction = 2, message = "Price digits must be a valid number with a maximum of 3 integral digits and 2 fractional digits")
     @Positive(message = "Price has negative value or zero")
     private Double initialPrice;//
 
     @NotNull( message="Quantity is null")
-    @Digits(integer = 3, fraction = 0, message = "Quantity must be a valid number with a maximum of 3 integral digits and 2 fractional digits")
+    @Digits(integer = 9, fraction = 0, message = "Quantity must be a valid number with a maximum of 3 integral digits and 2 fractional digits")
     @Positive(message = "Quantity has negative value or zero")
     private Integer storageQty;//
 

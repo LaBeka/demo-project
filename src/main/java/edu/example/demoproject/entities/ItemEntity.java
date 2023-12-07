@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@Table(name="cart_item_entity")
+@Table(name="item_entity")
 public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,5 +25,5 @@ public class ItemEntity {
     private Long productId;
 
     @Column(name = "quantity")
-    private int qty;
+    private Integer qty;
 }

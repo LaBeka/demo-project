@@ -1,10 +1,10 @@
 package edu.example.demoproject.dtos.cart;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
-@Builder
+@AllArgsConstructor
 @Data
 public class CartDto {
     private Long id;

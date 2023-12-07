@@ -1,6 +1,7 @@
 package edu.example.demoproject.api;
 
 import edu.example.demoproject.dtos.product.ProductCreateDto;
+import edu.example.demoproject.dtos.product.ProductCriteriaDto;
 import edu.example.demoproject.dtos.product.ProductDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,21 +22,29 @@ public interface ProductsApi {
 
     @GetMapping
     @Operation(summary = "Получение всех товаров")
-    List<ProductDto> getAllProducts();
+    List<ProductDto> getAll();
 
-    @GetMapping("/search")
+    @GetMapping("/search/title")
     @Operation(summary = "Поиск по продуктаm")
-    List<ProductDto> find(@RequestParam(value = "title") String title);
+    List<ProductDto> findByTitle(@RequestParam(value = "title") String title);
+
+    @GetMapping("/search/criteria")
+    @Operation(summary = "Поиск продуктов по критериям(слово в имени и описании, новый продукт, бренду и категориям)")
+    List<ProductDto> findByCriteria(@RequestBody ProductCriteriaDto dto);
 
     @PostMapping()
     @Operation(summary = "Добавление нового продукта")
     @ResponseStatus(HttpStatus.OK)
-    ProductDto createProduct(@Valid @RequestBody ProductCreateDto newProductDto);
+    ProductDto create(@Valid @RequestBody ProductCreateDto newProductDto);
 
     @PutMapping("/{id}")
-    @Operation(summary = "Изменение информации о продукта")
+    @Operation(summary = "Изменение информации о продуктe")
     @ResponseStatus(HttpStatus.OK)
-    void updateProductInfo(@PathVariable Long id, @Valid @RequestBody ProductCreateDto newProductDto);
+    void update(@PathVariable Long id, @Valid @RequestBody ProductCreateDto newProductDto);
 
-    
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Удаление продуктa")
+    @ResponseStatus(HttpStatus.OK)
+    void delete(@PathVariable Long id);
+
 }

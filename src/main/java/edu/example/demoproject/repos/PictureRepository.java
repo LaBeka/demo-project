@@ -15,7 +15,7 @@ public class PictureRepository extends BaseRepository<PictureEntity> {
                               from PictureEntity p
                               where p.productId = :id
                               """, PictureDto.class)
-                .setParameter("productId", id)
+                .setParameter("id", id)
                 .getSingleResult();
     }
 
