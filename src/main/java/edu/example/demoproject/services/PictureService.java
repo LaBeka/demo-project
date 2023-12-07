@@ -1,69 +1,75 @@
 package edu.example.demoproject.services;
 
-import edu.example.demoproject.dtos.picture.PictureCreateDto;
 import edu.example.demoproject.dtos.picture.PictureDto;
 import edu.example.demoproject.entities.PictureEntity;
-import edu.example.demoproject.mappers.PictureMapper;
 import edu.example.demoproject.repos.PictureRepository;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
 public class PictureService {
     private final PictureRepository pictureRepository;
-    private final PictureMapper pictureMapper;
 
-    public ResponseEntity getPictureByShowId(Long id, HttpServletRequest request) throws IOException {
-        PictureDto foundPicture = pictureRepository.findPictureEntityByProductId(id);
-        return setPathImage(foundPicture, request);
+    @Transactional
+    public ResponseEntity create(MultipartFile file, Long id) throws IOException {
+        PictureEntity entity = getPictureEntity(file, id);
+        pictureRepository.persist(entity);
+        return showBackPicture(entity);
+    }
+
+    public ResponseEntity getPictureByShowId(Long id)  {
+        Optional<PictureEntity> entity = pictureRepository.findPictureEntityByProductId(id);
+        if(entity.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return showBackPicture(entity.get());
     }
 
     @Transactional
-    public ResponseEntity create(PictureCreateDto dto, HttpServletRequest request) throws MalformedURLException {
-        PictureEntity pictureEntity = pictureMapper.pictureDtoToEntity(dto);
-        pictureRepository.persist(pictureEntity);
-        PictureDto pictureDto = pictureMapper.productEntityToDto(pictureEntity);
-        return setPathImage(pictureDto, request);
+    public ResponseEntity update(MultipartFile newFile, Long productId) throws IOException {
+        Optional<PictureEntity> entity = pictureRepository.findPictureEntityByProductId(productId);
+        PictureEntity newEntity = getPictureEntity(newFile, productId);
+        pictureRepository.update(entity.get().getId(), newEntity);
+        return showBackPicture(newEntity);
+    }
+
+    public List<PictureDto> getImagesOfProduct(Long productId) {
+        return pictureRepository.getImagesOfProduct(productId);
     }
 
     @Transactional
-    public ResponseEntity update(PictureCreateDto pictureCreateDto, HttpServletRequest request) throws IOException {
-        pictureRepository.update(pictureCreateDto);
-        return getPictureByShowId(pictureCreateDto.getProductId(), request);
+    public void delete(Long pictureId) {
+        pictureRepository.delete(pictureId);
     }
 
-
-
-    private ResponseEntity setPathImage(PictureDto dto, HttpServletRequest request) throws MalformedURLException {
-        Path ImageDirectory = Paths.get("storage", dto.getName());
-        Resource resource = new UrlResource(ImageDirectory.toUri());
-
-        String contentType = null;
-        try {
-            contentType = request.getServletContext()
-                    .getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException ex) {
-            System.out.println("Could not determine file type.");
-        }
-        if (contentType == null) {// Fallback to the default content type if type could not be determined
-            contentType = "application/octet-stream";//binary data == octet-stream
-        }
+    private static ResponseEntity<InputStreamResource> showBackPicture(PictureEntity entity) {
         return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
+                .contentLength(entity.getImage().length)
+                .contentType(MediaType.parseMediaType(entity.getImageContentType()))
+                .body(new InputStreamResource(new ByteArrayInputStream(entity.getImage())));
     }
 
+    private static PictureEntity getPictureEntity(MultipartFile file, Long id) throws IOException {
+        String contentType = file.getContentType();
+        byte[] picture = file.getBytes();
+        PictureEntity entity = PictureEntity.builder()
+                .id(null)
+                .productId(id)
+                .imageContentType(contentType)
+                .image(picture)
+                .build();
+        return entity;
+    }
 }

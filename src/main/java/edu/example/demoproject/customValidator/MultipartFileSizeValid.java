@@ -5,7 +5,7 @@ import javax.validation.Payload;
 
 @Constraint(validatedBy = MultipartFileSizeValidator.class)
 public @interface MultipartFileSizeValid {
-    long maxSizeInMB() default 512;
+    long maxSizeInMB() default 5120000;
 
     String message() default "DEFAULT_ERROR_MESSAGE";
 
