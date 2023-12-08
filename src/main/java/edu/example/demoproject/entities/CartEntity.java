@@ -1,8 +1,9 @@
 package edu.example.demoproject.entities;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
+import static jakarta.persistence.GenerationType.*;
 
 
 @Builder(toBuilder = true)
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Table(name="cart_entities")
 public class CartEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "cart_id")
     private Long id;
 

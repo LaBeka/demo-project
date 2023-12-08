@@ -1,10 +1,10 @@
 package edu.example.demoproject.entities;
 
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.Type;
-
-import javax.persistence.*;
-import java.util.UUID;
+import org.hibernate.type.descriptor.jdbc.VarbinaryJdbcType;
 
 @Entity
 @Builder(toBuilder = true)
@@ -27,6 +27,6 @@ public class PictureEntity {
 
     @Lob
     @Column(name = "picture")
-    @Type(type="org.hibernate.type.BinaryType")
+    @JdbcType(VarbinaryJdbcType.class)
     private byte[] image;
 }

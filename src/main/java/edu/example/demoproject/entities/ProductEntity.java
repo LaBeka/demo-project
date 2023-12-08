@@ -1,9 +1,7 @@
 package edu.example.demoproject.entities;
 
+import jakarta.persistence.*;
 import lombok.*;
-
-import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Builder(toBuilder = true)

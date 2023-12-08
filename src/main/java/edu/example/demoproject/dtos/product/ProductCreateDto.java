@@ -1,9 +1,9 @@
 package edu.example.demoproject.dtos.product;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
-import javax.validation.constraints.*;
 
 @Data
 public class ProductCreateDto {

@@ -2,9 +2,9 @@ package edu.example.demoproject.repos;
 
 import edu.example.demoproject.dtos.cart.CartDto;
 import edu.example.demoproject.entities.CartEntity;
+import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Query;
 import java.util.List;
 
 @Repository
