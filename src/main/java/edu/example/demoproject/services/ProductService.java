@@ -49,8 +49,8 @@ public class ProductService {
 
     @Transactional
     public void updateProductInfo(Long id, ProductCreateDto newProductDto) {
-        ProductEntity entity = productMapper.productDtoToEntity(newProductDto);
-        productRepository.updateProduct(id, entity);
+        ProductEntity entity = productMapper.productDtoToEntity(id, newProductDto);
+        productRepository.merge(entity);
     }
 
     @Transactional
