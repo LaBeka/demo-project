@@ -13,5 +13,10 @@ public abstract class BaseRepository<T> {
         em.persist(e);
         return e;
     }
+
+    public T merge(T e){
+        em.merge(e);
+        return e;
+    }
 }
 

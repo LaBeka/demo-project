@@ -10,7 +10,8 @@ public interface ProductMapper {
 
     @Mapping(constant = "true", target = "newProduct")
     @Mapping(target = "currentPrice", expression = "java(dto.getInitialPrice() - (dto.getInitialPrice() * dto.getDiscount() / 100))")
-    ProductEntity productDtoToEntity(ProductCreateDto dto);
+    @Mapping(source = "id", target = "id")
+    ProductEntity productDtoToEntity(Long id, ProductCreateDto dto);
 
     @Mapping(constant = "true", target = "newProduct")
     ProductDto productEntityToDto(ProductEntity productEntity);
