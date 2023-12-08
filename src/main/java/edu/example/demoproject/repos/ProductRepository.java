@@ -95,12 +95,12 @@ public class ProductRepository extends BaseRepository<ProductEntity> {
         CriteriaQuery<ProductEntity> select = criteriaQuery.select(from);
         List<Predicate> predicates = new ArrayList<>();
 
-        if (!dto.getName().isBlank() || !dto.getName().isEmpty()) {
+        if (dto.getName() != null) {
             Predicate predicate = criteriaBuilder.like(criteriaBuilder.lower(from.get("name")), "%" + dto.getName().toLowerCase() + "%");
             criteriaQuery.where(predicate);
             predicates.add(predicate);
         }
-        if (!dto.getDescription().isBlank() || !dto.getDescription().isEmpty()) {
+        if (dto.getDescription() != null) {
             Predicate predicate = criteriaBuilder.like(criteriaBuilder.lower(from.get("description")), "%" + dto.getDescription().toLowerCase() + "%");
             criteriaQuery.where(predicate);
             predicates.add(predicate);
@@ -112,13 +112,13 @@ public class ProductRepository extends BaseRepository<ProductEntity> {
             predicates.add(predicate);
         }
 
-        if (!dto.getBrand().isBlank() || !dto.getBrand().isEmpty()) {
+        if (dto.getBrand() != null) {
             Predicate predicate = criteriaBuilder.equal(criteriaBuilder.lower(from.get("brand")), dto.getBrand().toLowerCase());
-        criteriaQuery.where(predicate);
-        predicates.add(predicate);
+            criteriaQuery.where(predicate);
+            predicates.add(predicate);
         }
 
-        if (!dto.getCategory().isBlank() || !dto.getCategory().isEmpty()) {
+        if (dto.getCategory() != null) {
             Predicate predicate = criteriaBuilder.equal(criteriaBuilder.lower(from.get("category")), dto.getCategory().toLowerCase());
             criteriaQuery.where(predicate);
             predicates.add(predicate);
