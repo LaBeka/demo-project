@@ -1,0 +1,8 @@
+-- insert into picture_entity (product_id, pic_content_type, picture)
+-- values ('bowlJossMain.jpg', 1),
+--        ('cuttingBar.jpg', 2),
+--        ('flowers.jpg', 3),
+--        ('ivaGlassDecorativeBowl.jpg', 4),
+--        ('silkBambooTree.jpg', 5),
+--        ('smallKnife.jpg', 6),
+--        ('wairFairbasics.jpg', 7);
