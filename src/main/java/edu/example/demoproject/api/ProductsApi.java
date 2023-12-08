@@ -17,19 +17,19 @@ public interface ProductsApi {
     String DICTS_API_PATH = "/api/products";
 
     @GetMapping("/{id}")
-    @Operation(summary = "Получение полной информации о product")
+    @Operation(summary = "Получение полной информации о продукте")
     ProductDto getFullInfoById(@PathVariable Long id);
 
     @GetMapping
-    @Operation(summary = "Получение всех товаров")
+    @Operation(summary = "Получение всех продуктов")
     List<ProductDto> getAll();
 
     @GetMapping("/search/title")
-    @Operation(summary = "Поиск по продуктаm")
+    @Operation(summary = "Поиск слога в описании и названии продуктов")
     List<ProductDto> findByTitle(@RequestParam(value = "title") String title);
 
     @GetMapping("/search/criteria")
-    @Operation(summary = "Поиск продуктов по критериям(слово в имени и описании, новый продукт, бренду и категориям)")
+    @Operation(summary = "Поиск продуктов по критериям(полное совпадение критерии в имени и описании, новый продукт, бренду и категориям)")
     List<ProductDto> findByCriteria(@RequestBody ProductCriteriaDto dto);
 
     @PostMapping()
@@ -38,7 +38,7 @@ public interface ProductsApi {
     ProductDto create(@Valid @RequestBody ProductCreateDto newProductDto);
 
     @PutMapping("/{id}")
-    @Operation(summary = "Изменение информации о продуктe")
+    @Operation(summary = "Изменение информации(миени, описании, цена, количество, скидка, бренд и категория) о продуктe")
     @ResponseStatus(HttpStatus.OK)
     void update(@PathVariable Long id, @Valid @RequestBody ProductCreateDto newProductDto);
 

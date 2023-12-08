@@ -20,22 +20,22 @@ public interface PictureApi {
     String DICTS_API_PATH = "/api/image";
 
     @PostMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "Добавление новой фотографии продукта")
+    @Operation(summary = "Добавление новой фотографии продукта и дисплей фото")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity createPicProduct(
             @Valid @RequestPart("file")MultipartFile file,
             @PathVariable Long id) throws IOException;
 
     @GetMapping("/showPic/{id}")
-    @Operation(summary = "Получение фотографии продукта")
+    @Operation(summary = "Показать фото")
     ResponseEntity showImageByProductId(@PathVariable Long id) throws IOException;
 
     @GetMapping("/getPic/{id}")
-    @Operation(summary = "Получение фотографии продукта")
+    @Operation(summary = "Получение энтити фотографии ")
     List<PictureDto> getImageEntity(@PathVariable Long id) throws IOException;
 
     @PutMapping("/{id}")
-    @Operation(summary = "Изменение фотографии продукта")
+    @Operation(summary = "Поменять фотографию продукта по айди PictureEntity")
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity updatePicProductInfo(
             @Valid @RequestPart("file")MultipartFile file,
@@ -43,7 +43,7 @@ public interface PictureApi {
 
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Удалить фотографию продукта по айди фотографии")
+    @Operation(summary = "Удалить фотографию продукта по айди PictureEntity")
     @ResponseStatus(HttpStatus.OK)
     void delete(@PathVariable Long id);
 
