@@ -3,7 +3,7 @@ version: "3.8"
 services:
   postgres_demo:
     image: 'postgres:16.0'
-    container_name: shop-postgres
+    container_name: postgres_demo
     ports:
       - "5432:5432"
     environment:
@@ -19,7 +19,8 @@ services:
       - "8081:8081"
     depends_on:
       - postgres_demo
-
+    environment:
+      POSTGRES_JDBC: jdbc:postgresql://postgres_demo:5432/demo-project
 
 volumes:
   postgres_data:
