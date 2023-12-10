@@ -18,22 +18,22 @@ public class PictureController implements PictureApi {
     private final PictureService pictureService;
 
     @Override
-    public ResponseEntity createPicProduct(MultipartFile file, Long id) throws IOException {
-        return pictureService.create(file, id);
+    public List<PictureDto> getListPictureEntity(Long productId)  {
+        return pictureService.getListPictureDtoOfProduct(productId);
     }
 
     @Override
-    public ResponseEntity showImageByProductId(Long id) throws IOException {
-        return pictureService.getPictureByShowId(id);
+    public ResponseEntity showImageByItsId(Long id) {
+        return pictureService.getPictureByItsId(id);
     }
 
     @Override
-    public List<PictureDto> getImageEntity(Long id)  {
-        return pictureService.getImagesOfProduct(id);
+    public List<PictureDto> createPicOfProduct(MultipartFile file, Long productId) throws IOException {
+        return pictureService.createPicOfProduct(file, productId);
     }
 
     @Override
-    public ResponseEntity updatePicProductInfo(MultipartFile file, Long id) throws IOException {
+    public List<PictureDto> updatePicProductInfo(MultipartFile file, Long id) throws IOException {
         return pictureService.update(file, id);
     }
 

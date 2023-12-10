@@ -2,6 +2,7 @@ package edu.example.demoproject.services;
 
 import edu.example.demoproject.dtos.picture.PictureDto;
 import edu.example.demoproject.entities.PictureEntity;
+import edu.example.demoproject.mappers.PictureMapper;
 import edu.example.demoproject.repos.PictureRepository;
 
 import java.io.ByteArrayInputStream;
@@ -21,32 +22,30 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class PictureService {
     private final PictureRepository pictureRepository;
+    private final PictureMapper pictureMapper;
 
-    @Transactional
-    public ResponseEntity create(MultipartFile file, Long id) throws IOException {
-        PictureEntity entity = getPictureEntity(file, id);
-        pictureRepository.persist(entity);
+    public List<PictureDto> getListPictureDtoOfProduct(Long productId) {
+        return pictureRepository.getImagesOfProduct(productId);
+    }
+
+    public ResponseEntity getPictureByItsId(Long id)  {
+        PictureEntity entity = pictureRepository.getPictureByItsId(id);
         return showBackPicture(entity);
     }
 
-    public ResponseEntity getPictureByShowId(Long id)  {
-        Optional<PictureEntity> entity = pictureRepository.findPictureEntityByProductId(id);
-        if(entity.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        return showBackPicture(entity.get());
+    @Transactional
+    public List<PictureDto> createPicOfProduct(MultipartFile file, Long productId) throws IOException {
+        PictureEntity entity = pictureMapper.buildEntity(null, productId, file.getContentType(), file.getBytes());
+        pictureRepository.persist(entity);
+        return getListPictureDtoOfProduct(productId);
     }
 
     @Transactional
-    public ResponseEntity update(MultipartFile newFile, Long productId) throws IOException {
-        Optional<PictureEntity> entity = pictureRepository.findPictureEntityByProductId(productId);
-        PictureEntity newEntity = getPictureEntity(newFile, productId);
-        pictureRepository.update(entity.get().getId(), newEntity);
-        return showBackPicture(newEntity);
-    }
-
-    public List<PictureDto> getImagesOfProduct(Long productId) {
-        return pictureRepository.getImagesOfProduct(productId);
+    public List<PictureDto> update(MultipartFile newFile, Long id) throws IOException {
+        Long productId = pictureRepository.getPictureByItsId(id).getProductId();
+        PictureEntity newEntity = pictureMapper.buildEntity(id, productId, newFile.getContentType(), newFile.getBytes());
+        pictureRepository.merge(newEntity);
+        return getListPictureDtoOfProduct(newEntity.getProductId());
     }
 
     @Transactional
@@ -59,17 +58,5 @@ public class PictureService {
                 .contentLength(entity.getImage().length)
                 .contentType(MediaType.parseMediaType(entity.getImageContentType()))
                 .body(new InputStreamResource(new ByteArrayInputStream(entity.getImage())));
-    }
-
-    private static PictureEntity getPictureEntity(MultipartFile file, Long id) throws IOException {
-        String contentType = file.getContentType();
-        byte[] picture = file.getBytes();
-        PictureEntity entity = PictureEntity.builder()
-                .id(null)
-                .productId(id)
-                .imageContentType(contentType)
-                .image(picture)
-                .build();
-        return entity;
     }
 }

@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  postgres_demo:
+  postgres:
     image: 'postgres:16.0'
     container_name: shop-postgres
     ports:
@@ -12,6 +12,14 @@ services:
       POSTGRES_DB: demo-project
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  demo-project:
+    build: .
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres_demo
+
 
 volumes:
   postgres_data:

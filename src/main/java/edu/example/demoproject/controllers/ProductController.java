@@ -38,13 +38,13 @@ public class ProductController implements ProductsApi {
     }
 
     @Override
-    public ProductDto create(ProductCreateDto newProductDto) {
+    public Long create(ProductCreateDto newProductDto) {
         return productService.create(newProductDto);
     }
 
     @Override
-    public void update(Long id, ProductCreateDto newProductDto) {
-        productService.updateProductInfo(id, newProductDto);
+    public Long update(Long id, ProductCreateDto newProductDto) {
+        return productService.updateProductInfo(id, newProductDto);
     }
 
     @Override

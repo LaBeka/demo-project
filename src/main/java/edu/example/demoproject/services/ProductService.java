@@ -41,16 +41,17 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDto create(ProductCreateDto newProductDto) {
-        ProductEntity productEntity = productMapper.productDtoToEntity(newProductDto);
-        productRepository.persist(productEntity);
-        return productMapper.productEntityToDto(productEntity);
+    public Long create(ProductCreateDto newProductDto) {
+        ProductEntity productEntity = productMapper.productDtoToEntity(null, newProductDto);
+        productRepository.persist(productEntity);//ProductCreateDto не стала создавать для него айди.
+        return productEntity.getId();
     }
 
     @Transactional
-    public void updateProductInfo(Long id, ProductCreateDto newProductDto) {
+    public Long updateProductInfo(Long id, ProductCreateDto newProductDto) {
         ProductEntity entity = productMapper.productDtoToEntity(id, newProductDto);
         productRepository.merge(entity);
+        return entity.getId();
     }
 
     @Transactional

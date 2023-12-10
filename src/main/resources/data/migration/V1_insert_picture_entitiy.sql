@@ -1,8 +1,8 @@
 -- insert into picture_entity (product_id, pic_content_type, picture)
--- values ('bowlJossMain.jpg', 1),
---        ('cuttingBar.jpg', 2),
---        ('flowers.jpg', 3),
---        ('ivaGlassDecorativeBowl.jpg', 4),
---        ('silkBambooTree.jpg', 5),
---        ('smallKnife.jpg', 6),
---        ('wairFairbasics.jpg', 7);
+-- values (1, "1", ),
+--        (1, "2"),
+--        (1, "3"),
+--        (2, "4"),
+--        (3, 5),
+--        (4, 6),
+--        (5, 7);

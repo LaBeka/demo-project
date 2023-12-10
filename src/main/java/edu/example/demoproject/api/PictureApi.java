@@ -19,30 +19,30 @@ public interface PictureApi {
 
     String DICTS_API_PATH = "/api/image";
 
-    @PostMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "Добавление новой фотографии продукта и дисплей фото")
-    @ResponseStatus(HttpStatus.OK)
-    ResponseEntity createPicProduct(
-            @Valid @RequestPart("file")MultipartFile file,
-            @PathVariable Long id) throws IOException;
+    @GetMapping("/getListPics/{productId}")
+    @Operation(summary = "Получение список энтити фотографии по айди продукта")
+    List<PictureDto> getListPictureEntity(@PathVariable Long productId) throws IOException;
 
     @GetMapping("/showPic/{id}")
-    @Operation(summary = "Показать фото")
-    ResponseEntity showImageByProductId(@PathVariable Long id) throws IOException;
+    @Operation(summary = "Показать фото по айди PictureDto")
+    ResponseEntity showImageByItsId(@PathVariable Long id) throws IOException;
 
-    @GetMapping("/getPic/{id}")
-    @Operation(summary = "Получение энтити фотографии ")
-    List<PictureDto> getImageEntity(@PathVariable Long id) throws IOException;
+    @PostMapping(value = "/add/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Добавление новой фотографии продукта по айди продукта")
+    @ResponseStatus(HttpStatus.OK)
+    List<PictureDto> createPicOfProduct(
+            @Valid @RequestPart("file")MultipartFile file,
+            @PathVariable Long productId) throws IOException;
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     @Operation(summary = "Поменять фотографию продукта по айди PictureEntity")
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity updatePicProductInfo(
+    List<PictureDto> updatePicProductInfo(
             @Valid @RequestPart("file")MultipartFile file,
             @PathVariable Long id) throws IOException;
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @Operation(summary = "Удалить фотографию продукта по айди PictureEntity")
     @ResponseStatus(HttpStatus.OK)
     void delete(@PathVariable Long id);

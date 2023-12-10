@@ -35,12 +35,12 @@ public interface ProductsApi {
     @PostMapping()
     @Operation(summary = "Добавление нового продукта")
     @ResponseStatus(HttpStatus.OK)
-    ProductDto create(@Valid @RequestBody ProductCreateDto newProductDto);
+    Long create(@Valid @RequestBody ProductCreateDto newProductDto);
 
     @PutMapping("/{id}")
     @Operation(summary = "Изменение информации(миени, описании, цена, количество, скидка, бренд и категория) о продуктe")
     @ResponseStatus(HttpStatus.OK)
-    void update(@PathVariable Long id, @Valid @RequestBody ProductCreateDto newProductDto);
+    Long update(@PathVariable Long id, @Valid @RequestBody ProductCreateDto newProductDto);
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Удаление продуктa")

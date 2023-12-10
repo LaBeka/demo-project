@@ -10,6 +10,16 @@ import java.util.Optional;
 @Repository
 public class PictureRepository extends BaseRepository<PictureEntity> {
 
+    public PictureEntity getPictureByItsId(Long id) {
+        return em.createQuery("""
+                              select p
+                              from PictureEntity p
+                              where p.id = :id
+                              """, PictureEntity.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
     public Optional<PictureEntity> findPictureEntityByProductId(Long id) {
         return em.createQuery("""
                               select p

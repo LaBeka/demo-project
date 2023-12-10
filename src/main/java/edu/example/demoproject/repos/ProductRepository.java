@@ -140,4 +140,5 @@ public class ProductRepository extends BaseRepository<ProductEntity> {
                 .setParameter("id", id);
         query.executeUpdate();
     }
+
 }

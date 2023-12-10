@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -16,21 +16,21 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartMapper cartMapper;
 
-    public List<CartDto> getCartByUserId(Long id) {
+    public Optional<CartDto> getCartByUserId(Long id) {
         return cartRepository.getCart(id);
     }
 
     @Transactional
-    public CartDto createCart(Long id) {
-        List<CartDto> cartExists = getCartByUserId(id);
-        if(!cartExists.isEmpty()){
-            return cartExists.get(0);//hard code needs to be fixed later
+    public Long createCart(Long id) {
+        Optional<CartDto> cartExists = getCartByUserId(id);
+        if(cartExists.isPresent()){
+            return cartExists.get().getId();//позволит не создавать вторую карту у данного пользователя
         }
 
         CartDto dto = new CartDto(null, id);
         CartEntity entity = cartMapper.dtoToEntity(dto);
         cartRepository.persist(entity);
-        return getCartByUserId(id).get(0);//нужно исправить в будущем, чтобы возвращал только один актуальную корзину, этого чела.
+        return entity.getId();//send back only id of cart to put new/notnew items
     }
 
     @Transactional

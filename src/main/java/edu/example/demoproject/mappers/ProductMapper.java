@@ -16,4 +16,5 @@ public interface ProductMapper {
     @Mapping(constant = "true", target = "newProduct")
     ProductDto productEntityToDto(ProductEntity productEntity);
 
+
 }

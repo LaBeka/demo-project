@@ -5,20 +5,21 @@ import edu.example.demoproject.dtos.items.ItemDto;
 import edu.example.demoproject.entities.ItemEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class ItemRepository extends BaseRepository<ItemEntity> {
 
-    public ItemDto getById(Long id) {
+    public List<ItemDto> getItemsByCartId(Long cartId) {
         return em.createQuery("""
                               select new edu.example.demoproject.dtos.items.ItemDto(
                               i.id, i.cartId, i.productId, i.qty)
                               from ItemEntity i
-                              where i.id = :id
+                              where i.cartId = :cartId
                               """, ItemDto.class)
-                .setParameter("id", id)
-                .getSingleResult();
+                .setParameter("cartId", cartId)
+                .getResultList();
     }
 
     public Optional<ItemDto> ifItemInCartExists(ItemCreateDto dto) {
@@ -55,9 +56,20 @@ public class ItemRepository extends BaseRepository<ItemEntity> {
                 .executeUpdate();
     }
 
-    public void delete(Long id) {
-        em.createQuery("delete ItemEntity i where i.id = :id")
-                .setParameter("id", id)
+    public void delete(Long productId) {
+        em.createQuery("delete ItemEntity i where i.productId = :productId")
+                .setParameter("productId", productId)
                 .executeUpdate();
+    }
+
+    public ItemDto getItemByItsProductId(Long productId) {
+        return em.createQuery("""
+                              select new edu.example.demoproject.dtos.items.ItemDto(
+                              i.id, i.cartId, i.productId, i.qty)
+                              from ItemEntity i
+                              where i.productId = :productId
+                              """, ItemDto.class)
+                .setParameter("productId", productId)
+                .getSingleResult();
     }
 }

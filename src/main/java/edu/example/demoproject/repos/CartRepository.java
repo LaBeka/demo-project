@@ -5,12 +5,12 @@ import edu.example.demoproject.entities.CartEntity;
 import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CartRepository extends BaseRepository<CartEntity> {
 
-    public List<CartDto> getCart(Long id) {
+    public Optional<CartDto> getCart(Long id) {
         return em.createQuery("""
                               select new edu.example.demoproject.dtos.cart.CartDto(
                               c.id, c.userId)
@@ -18,7 +18,8 @@ public class CartRepository extends BaseRepository<CartEntity> {
                               where c.userId = :id
                               """, CartDto.class)
                 .setParameter("id", id)
-                .getResultList();
+                .getResultStream()
+                .findFirst();
     }
 
     public void delete(Long id) {

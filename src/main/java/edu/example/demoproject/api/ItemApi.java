@@ -1,11 +1,11 @@
 package edu.example.demoproject.api;
 
 import edu.example.demoproject.dtos.items.ItemCreateDto;
-import edu.example.demoproject.dtos.items.ItemDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -15,28 +15,28 @@ public interface ItemApi {
 
     String DICTS_API_PATH = "/api/items";
 
-    @GetMapping("/{id}")
+    @GetMapping("/{cartId}")
     @Operation(summary = "Получение продуктов в корзине по айди корзины/AUTH")
-    ItemDto getItemByCartUserId(@PathVariable Long id);//needs to be modified later
+    ResponseEntity getItemsByCartId(@PathVariable Long cartId);//needs to be modified later with auth
 
     @PostMapping()
     @Operation(summary = "Положить в корзину новый продукт")
     @ResponseStatus(HttpStatus.OK)
     void addNewItem(@Valid @RequestBody ItemCreateDto dto);
 
-    @PutMapping("/increment/{id}")
-    @Operation(summary = "Увеличить количество продукта в корзине")
+    @PutMapping("/increment/{productId}")
+    @Operation(summary = "Увеличить количество продукта в корзине по productId")
     @ResponseStatus(HttpStatus.OK)
-    void incrementQtyItem(@PathVariable Long id);
+    void incrementQtyItem(@PathVariable Long productId);
 
-    @PutMapping("/decrement/{id}")
-    @Operation(summary = "Уменьшить количество продукта в корзине")
+    @PutMapping("/decrement/{productId}")
+    @Operation(summary = "Уменьшить количество продукта в корзине по productId")
     @ResponseStatus(HttpStatus.OK)
-    void decrementQtyItem(@PathVariable Long id);
+    void decrementQtyItem(@PathVariable Long productId);
 
-    @DeleteMapping("/delete/{id}")
-    @Operation(summary = "Удалить продукт из корзины")
+    @DeleteMapping("/delete/{productId}")
+    @Operation(summary = "Удалить продукт из корзины по productId")
     @ResponseStatus(HttpStatus.OK)
-    void delete(@PathVariable Long id);
+    void delete(@PathVariable Long productId);
 
 }
