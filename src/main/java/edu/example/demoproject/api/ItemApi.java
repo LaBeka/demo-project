@@ -1,5 +1,6 @@
 package edu.example.demoproject.api;
 
+import edu.example.demoproject.dtos.CartAction;
 import edu.example.demoproject.dtos.items.ItemCreateDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,10 +25,10 @@ public interface ItemApi {
     @ResponseStatus(HttpStatus.OK)
     void addNewItem(@Valid @RequestBody ItemCreateDto dto);
 
-    @PutMapping("/increment/{productId}")
+    @PutMapping("/{userId}/increment/{productId}")
     @Operation(summary = "Увеличить количество продукта в корзине по productId")
     @ResponseStatus(HttpStatus.OK)
-    void incrementQtyItem(@PathVariable Long productId);
+    void incrementQtyItem(@PathVariable Long userId, @PathVariable Long productId, @RequestBody CartAction action);
 
     @PutMapping("/decrement/{productId}")
     @Operation(summary = "Уменьшить количество продукта в корзине по productId")

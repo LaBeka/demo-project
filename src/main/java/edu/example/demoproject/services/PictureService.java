@@ -42,7 +42,7 @@ public class PictureService {
 
     @Transactional
     public List<PictureDto> update(MultipartFile newFile, Long id) throws IOException {
-        Long productId = pictureRepository.getPictureByItsId(id).getProductId();
+        Long productId = pictureRepository.getPictureByItsId(id).getProductId();//getonlyid
         PictureEntity newEntity = pictureMapper.buildEntity(id, productId, newFile.getContentType(), newFile.getBytes());
         pictureRepository.merge(newEntity);
         return getListPictureDtoOfProduct(newEntity.getProductId());
