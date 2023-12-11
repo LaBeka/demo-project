@@ -1,21 +1,18 @@
 package edu.example.demoproject.dtos.product;
 
-import edu.example.demoproject.dtos.brand.BrandDto;
-import edu.example.demoproject.dtos.category.CategoryDto;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@Builder
+@AllArgsConstructor
 public class ProductDto {
     private Long id;
     private String name;
-    private String image;
     private String description;
     private Double initialPrice;
     private Integer discount;
-    private String currentPrice;
+    private Double currentPrice;
     private boolean newProduct;
-    private BrandDto brand;
-    private CategoryDto category;
+    private String brand;
+    private String category;
 }

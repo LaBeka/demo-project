@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart-style.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
@@ -27,19 +28,26 @@
             <div class="collapse navbar-collapse" id="menuExpanded">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="#">Brands</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">Feature</a>
+                        <a class="nav-link" href="#">New products</a>
                     </li>
 
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">Page</a>
+                        <a class="nav-link" href="#">Categories</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">Contact</a>
+                        <a class="nav-link" href="#">Lowered price</a>
                     </li>
                 </ul>
+                <form action="/logout" method="POST">
+                    <button type="submit">Logout</button>
+                </form>
+                <div class="shopping-header" id="shopping-header">
+                    <img src="images/cart.png"  alt="cart-icon">
+                    <span class="cartQuantity">0</span>
+                </div>
             </div>
         </div>
     </nav>
@@ -70,7 +78,8 @@
 </div>
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="js/script.js"></script>
+<script src="js/main-script.js"></script>
+<script src="js/productEntity-detail.js"></script>
 
 </body>
 </html>

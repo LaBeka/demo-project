@@ -1,25 +1,15 @@
 package edu.example.demoproject.mappers;
 
-import edu.example.demoproject.dtos.cart.CartDto;
+import edu.example.demoproject.dtos.items.ItemCreateDto;
 import edu.example.demoproject.dtos.items.ItemDto;
-import edu.example.demoproject.dtos.product.ProductDto;
-import edu.example.demoproject.entities.Item;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import edu.example.demoproject.entities.ItemEntity;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-@AllArgsConstructor
-public class ItemMapper {
-    final private ProductMapper productMapper;
-    public ItemDto buildItem(Item item){
-        ProductDto productDto = this.productMapper.buildProduct(
-                item.getProduct());
+@Mapper(componentModel = "spring")
+public interface ItemMapper {
+    ItemDto entityToDto(ItemEntity entity);
 
-        return ItemDto.builder()
-                .id(item.getId())
-                .cart(item.getCart())
-                .productDto(productDto)
-                .qty(item.getQty())
-                .build();
-    }
+    @Mapping(constant = "1", target = "qty")
+    ItemEntity dtoToEntity(ItemCreateDto dto);
 }

@@ -10,4 +10,13 @@ public class MainController {
     public String getMainPage(){
         return "main";
     }
+
+    @GetMapping("/detail")
+    public String getProductDetailPage(){
+        return "detail";
+    }
+    @GetMapping("/addProduct")
+    public String getAddProdPage(){
+        return "addProduct";
+    }
 }
