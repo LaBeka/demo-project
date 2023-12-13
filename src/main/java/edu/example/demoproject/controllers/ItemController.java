@@ -1,6 +1,7 @@
 package edu.example.demoproject.controllers;
 
 import edu.example.demoproject.api.ItemApi;
+import edu.example.demoproject.dtos.CartAction;
 import edu.example.demoproject.dtos.items.ItemCreateDto;
 import edu.example.demoproject.dtos.items.ItemDto;
 import edu.example.demoproject.services.ItemService;
@@ -30,8 +31,8 @@ public class ItemController implements ItemApi {
     }
 
     @Override
-    public void incrementQtyItem(Long productId) {
-        itemService.incrementQtyItem(productId);
+    public void incrementQtyItem(Long userId, Long productId, CartAction action) {
+
     }
 
     @Override
