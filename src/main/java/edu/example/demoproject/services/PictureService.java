@@ -13,14 +13,14 @@ import edu.example.demoproject.repos.PictureRepository;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
+import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.core.io.InputStreamResource;
@@ -41,6 +41,7 @@ public class PictureService {
     private final ImageMapper imageMapper;
     private final MinioProperties minioProperties;
     private final MinioClient minioClient;
+
 
     public List<PictureDto> getListPictureDtoOfProduct(Long productId) {
         return pictureRepository.getImagesOfProduct(productId);
@@ -77,18 +78,20 @@ public class PictureService {
                 .contentType(MediaType.parseMediaType(entity.getImageContentType()))
                 .body(new InputStreamResource(new ByteArrayInputStream(entity.getImage())));
     }
-    public void uploadImage(MultipartFile image, Long productId){
-        String imageName = upload(image);
+
+    public void uploadImage(MultipartFile image, Long productId) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        String imageName = upload(image, productId);
         ImageEntity entity = imageMapper.buildEntity(null, productId, imageName);
         imageRepository.persist(entity);
     }
 
-    public String upload(MultipartFile image){
-        try {
-            createBucket();
-        } catch (Exception e) {
-            throw new ImageUploadException("Image upload failed: " + e.getMessage());
-        }
+    public String upload(MultipartFile image, Long productId) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+//        try {
+        String bucketName = "product-bucket-" + productId;
+            createBucket(bucketName);
+//        } catch (Exception e) {
+//            throw new ImageUploadException("Image upload failed: " + e.getMessage());
+//        }
         if(image.isEmpty() || image.getOriginalFilename() == null){
             throw new ImageUploadException("Image file empty");
         }
@@ -99,18 +102,27 @@ public class PictureService {
         } catch (IOException e) {
             throw new ImageUploadException("Image upload failed: " + e.getMessage());
         }
-        saveImage(inputStream, filename);
+        saveImage(inputStream, filename, bucketName);
         return filename;
     }
+    public boolean checkBucketExists(String bucketName) {
+        try {
+            return minioClient.bucketExists(BucketExistsArgs.builder()
+                    .bucket(bucketName)
+                    .build());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-    @SneakyThrows
-    private void createBucket(){
-        boolean found = minioClient.bucketExists(BucketExistsArgs.builder()
-                .bucket(minioProperties.getBucket())
-                .build());
+    private void createBucket(String bucketName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+
+        boolean found = checkBucketExists(bucketName);
         if(!found){
+
             minioClient.makeBucket(MakeBucketArgs.builder()
-                    .bucket(minioProperties.getBucket())
+                    .bucket(bucketName)
                     .build());
         }
     }
@@ -126,10 +138,10 @@ public class PictureService {
     }
 
     @SneakyThrows
-    private void saveImage(InputStream inputStream, String filename) {
+    private void saveImage(InputStream inputStream, String filename, String bucketName) {
         minioClient.putObject(PutObjectArgs.builder()
                         .stream(inputStream, inputStream.available(), -1)
-                        .bucket(minioProperties.getBucket())
+                        .bucket(bucketName)
                         .object(filename)
                 .build());
     }
