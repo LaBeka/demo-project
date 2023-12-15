@@ -1,8 +1,0 @@
--- insert into picture_entity (product_id, pic_content_type, picture)
--- values (1, "1", ),
---        (1, "2"),
---        (1, "3"),
---        (2, "4"),
---        (3, 5),
---        (4, 6),
---        (5, 7);

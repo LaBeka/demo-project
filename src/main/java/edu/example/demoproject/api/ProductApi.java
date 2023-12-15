@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
 
-@RequestMapping(ProductsApi.DICTS_API_PATH)
-@Tag(name = "Методы для работы с продуктами", description = ProductsApi.DICTS_API_PATH)
-public interface ProductsApi {
+@RequestMapping(ProductApi.DICTS_API_PATH)
+@Tag(name = "Методы для работы с продуктами", description = ProductApi.DICTS_API_PATH)
+public interface ProductApi {
     String DICTS_API_PATH = "/api/products";
 
     @GetMapping("/{id}")

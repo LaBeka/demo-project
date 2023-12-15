@@ -1,7 +1,7 @@
 package edu.example.demoproject.api;
 
 import edu.example.demoproject.dtos.CartAction;
-import edu.example.demoproject.dtos.items.ItemCreateDto;
+import edu.example.demoproject.dtos.item.ItemCreateDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -25,15 +25,17 @@ public interface ItemApi {
     @ResponseStatus(HttpStatus.OK)
     void addNewItem(@Valid @RequestBody ItemCreateDto dto);
 
-    @PutMapping("/{userId}/increment/{productId}")
-    @Operation(summary = "Увеличить количество продукта в корзине по productId")
-    @ResponseStatus(HttpStatus.OK)
-    void incrementQtyItem(@PathVariable Long userId, @PathVariable Long productId, @RequestBody CartAction action);
+//    @PutMapping("/{userId}/increment/{productId}")
+//    @PathVariable Long userId, @PathVariable Long productId,
 
-    @PutMapping("/decrement/{productId}")
-    @Operation(summary = "Уменьшить количество продукта в корзине по productId")
+    @GetMapping("/getActions")
+    @Operation(summary = "Получить перечисление действий")
+    ResponseEntity getListActions();
+
+    @PutMapping("/action/{productId}")
+    @Operation(summary = "Увеличить/Уменьшить количество продукта в корзине по productId")
     @ResponseStatus(HttpStatus.OK)
-    void decrementQtyItem(@PathVariable Long productId);
+    void doAction(@PathVariable Long productId, @RequestBody CartAction action) throws Exception;
 
     @DeleteMapping("/delete/{productId}")
     @Operation(summary = "Удалить продукт из корзины по productId")

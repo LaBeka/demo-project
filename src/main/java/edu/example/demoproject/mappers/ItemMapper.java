@@ -1,7 +1,7 @@
 package edu.example.demoproject.mappers;
 
-import edu.example.demoproject.dtos.items.ItemCreateDto;
-import edu.example.demoproject.dtos.items.ItemDto;
+import edu.example.demoproject.dtos.item.ItemCreateDto;
+import edu.example.demoproject.dtos.item.ItemDto;
 import edu.example.demoproject.entities.ItemEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

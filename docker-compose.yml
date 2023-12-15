@@ -13,15 +13,15 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  demo-project:
-    build: .
-    ports:
-      - "8081:8081"
-    depends_on:
-      - postgres_demo
-      - minio
-    environment:
-      POSTGRES_JDBC: jdbc:postgresql://postgres_demo:5432/demo-project
+#  demo-project:
+#    build: .
+#    ports:
+#      - "8081:8081"
+#    depends_on:
+#      - postgres_demo
+#      - minio
+#    environment:
+#      POSTGRES_JDBC: jdbc:postgresql://postgres_demo:5432/demo-project
 
 
   minio:
