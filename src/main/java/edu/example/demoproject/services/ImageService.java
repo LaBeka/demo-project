@@ -33,7 +33,6 @@ public class ImageService {
     private final ImageMapper imageMapper;
     private final MinioClient minioClient;
 
-
     public List<ImageDto> getListPictureDtoOfProduct(Long productId) {
         return imageRepository.getImagesOfProduct(productId);
     }
@@ -43,7 +42,7 @@ public class ImageService {
     public void update(MultipartFile newFile, Long id) throws IOException {
         deleteObjectInBucket(id);
         Long productId = imageRepository.getImageByItsId(id).getProductId();//getonlyid
-        String newFileName = upload(newFile, productId);
+        String newFileName = uploadInBucket(newFile, productId);
         ImageEntity newEntity = imageMapper.buildEntity(id, productId, newFileName);
         imageRepository.merge(newEntity);
     }
@@ -88,12 +87,12 @@ public class ImageService {
 
     @Transactional
     public void uploadImage(MultipartFile image, Long productId)  {
-        String imageName = upload(image, productId);
+        String imageName = uploadInBucket(image, productId);
         ImageEntity entity = imageMapper.buildEntity(null, productId, imageName);
         imageRepository.persist(entity);
     }
 
-    public String upload(MultipartFile image, Long productId) {
+    public String uploadInBucket(MultipartFile image, Long productId) {
         String bucketName = "product-" + productId + "-bucket";
         createBucket(bucketName);
         if(image.isEmpty() || image.getOriginalFilename() == null){
