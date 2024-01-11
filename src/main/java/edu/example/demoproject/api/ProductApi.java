@@ -6,9 +6,12 @@ import edu.example.demoproject.dtos.product.ProductDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
+import java.security.Principal;
 import java.util.List;
 
 @RequestMapping(ProductApi.DICTS_API_PATH)
@@ -44,7 +47,7 @@ public interface ProductApi {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Удаление продуктa")
-    @ResponseStatus(HttpStatus.OK)
-    void delete(@PathVariable Long id);
+//    @ResponseStatus({HttpStatus.OK, HttpStatus.NOT_FOUND})
+    ResponseEntity delete(@PathVariable Long id, Principal principal);
 
 }

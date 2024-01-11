@@ -6,8 +6,11 @@ import edu.example.demoproject.dtos.product.ProductCriteriaDto;
 import edu.example.demoproject.dtos.product.ProductDto;
 import edu.example.demoproject.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -46,8 +49,14 @@ public class ProductController implements ProductApi {
     }
 
     @Override
-    public void delete(Long id) {
+    public ResponseEntity delete(Long id, Principal principal) {
+        if(principal == null){
+           return new ResponseEntity("", HttpStatus.NOT_FOUND);
+        }
+        String email = principal.getName();
+        //User user = userService.checkIfUserExists(email);
         productService.deleteProduct(id);
+        return new ResponseEntity("", HttpStatus.OK);
     }
 
 }

@@ -1,6 +1,6 @@
 package edu.example.demoproject.services;
 
-import edu.example.demoproject.dtos.CartAction;
+import edu.example.demoproject.dtos.cart.CartAction;
 import edu.example.demoproject.dtos.item.ItemCreateDto;
 import edu.example.demoproject.dtos.item.ItemDto;
 import edu.example.demoproject.entities.ItemEntity;
@@ -36,7 +36,7 @@ public class ItemService {
     }
 
     @Transactional
-    public void incrementQtyItem(ItemDto dto) {//при нажатии на кнопку плюсик рядом с продуктом
+    public void incrementQtyItem(ItemDto dto) {
         itemRepository.incrementQty(dto);
     }
 

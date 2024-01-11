@@ -1,7 +1,7 @@
 package edu.example.demoproject.controllers;
 
 import edu.example.demoproject.api.ItemApi;
-import edu.example.demoproject.dtos.CartAction;
+import edu.example.demoproject.dtos.cart.CartAction;
 import edu.example.demoproject.dtos.item.ItemCreateDto;
 import edu.example.demoproject.dtos.item.ItemDto;
 import edu.example.demoproject.services.ItemService;

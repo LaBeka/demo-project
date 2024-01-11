@@ -1,19 +1,17 @@
 package edu.example.demoproject.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
-@Data
-@NoArgsConstructor
 @Entity
-@Table(name="role_entity")
+@Data
+@Table(name = "role_entity")
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "role_name")
-    private String role;
-
+    private String name;
 }

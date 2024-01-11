@@ -1,6 +1,6 @@
 package edu.example.demoproject.api;
 
-import edu.example.demoproject.dtos.CartAction;
+import edu.example.demoproject.dtos.cart.CartAction;
 import edu.example.demoproject.dtos.item.ItemCreateDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,7 +1,10 @@
 package edu.example.demoproject.dtos.user;
 
+import edu.example.demoproject.entities.RoleEntity;
 import lombok.Data;
 import jakarta.validation.constraints.*;
+
+import java.util.List;
 
 @Data
 public class UserCreateDto {

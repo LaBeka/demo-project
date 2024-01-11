@@ -1,4 +1,4 @@
-package edu.example.demoproject.dtos;
+package edu.example.demoproject.dtos.cart;
 
 import lombok.AllArgsConstructor;
 
