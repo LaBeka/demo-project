@@ -21,8 +21,8 @@ public class AuthController implements AuthApi {
     private final AuthService authService;
 
     @Override
-    public ResponseEntity<?> getRegPage() {
-        return ResponseEntity.ok().body("main");
+    public String getRegPage() {
+        return "main";
     }
 
     @Override

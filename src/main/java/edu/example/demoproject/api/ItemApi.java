@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -18,6 +19,7 @@ public interface ItemApi {
 
     @GetMapping("/{cartId}")
     @Operation(summary = "Получение продуктов в корзине по айди корзины/AUTH")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     ResponseEntity getItemsByCartId(@PathVariable Long cartId);//needs to be modified later with auth
 
     @PostMapping()

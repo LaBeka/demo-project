@@ -16,7 +16,7 @@ public interface AuthApi {
 
     @GetMapping("/")
     @Operation(summary = "Get the page for registration new user")
-    ResponseEntity<?> getRegPage();
+    String getRegPage();
 
     @PostMapping("/registration")
     @Operation(summary = "Registration new user")

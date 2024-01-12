@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -25,6 +26,7 @@ public interface ProductApi {
 
     @GetMapping
     @Operation(summary = "Получение всех продуктов")
+    @PreAuthorize("hasAnyRole('USER')")
     List<ProductDto> getAll();
 
     @GetMapping("/search/title")
