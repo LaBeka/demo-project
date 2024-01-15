@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @AllArgsConstructor
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
 
   private final UserService userService;
@@ -35,17 +35,22 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests((authz) -> authz
-                    .requestMatchers("/swagger-ui.html/**").anonymous()
+                    .requestMatchers("/swagger-ui/**").permitAll()
+                    .requestMatchers("/swagger-ui.html").permitAll()
+                    .requestMatchers("/v3/api-docs/**").permitAll()
                     .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers("/api/products/**").hasRole("ADMIN")
+                    .requestMatchers("/api/products/**").authenticated()
+                    .requestMatchers("/api/carts/**").authenticated()
+                    .requestMatchers("/api/images/**").authenticated()
+                    .requestMatchers("/api/items/**").authenticated()
+                    .requestMatchers("/api/roles/**").authenticated()
+
                     .anyRequest().authenticated()
             )
 
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
             .httpBasic(basic -> basic.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-            .exceptionHandling(Customizer.withDefaults())
-
-    ;
+            .exceptionHandling(Customizer.withDefaults());
     return http.build();
   }
 

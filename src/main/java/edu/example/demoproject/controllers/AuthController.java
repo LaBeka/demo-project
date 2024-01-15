@@ -1,7 +1,6 @@
 package edu.example.demoproject.controllers;
 
 import edu.example.demoproject.api.AuthApi;
-import edu.example.demoproject.api.UserApi;
 import edu.example.demoproject.dtos.auth.JwtRequest;
 import edu.example.demoproject.dtos.user.UserCreateDto;
 import edu.example.demoproject.dtos.user.UserDto;
