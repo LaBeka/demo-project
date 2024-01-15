@@ -1,11 +1,13 @@
-package edu.example.demoproject.dtos.picture;
+package edu.example.demoproject.dtos.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Data
 @AllArgsConstructor
-public class PictureDto {
+@Data
+public class ItemDto {
     private Long id;
+    private Long cartId;
     private Long productId;
+    private Integer qty;
 }

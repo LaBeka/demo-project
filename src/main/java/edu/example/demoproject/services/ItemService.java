@@ -1,7 +1,8 @@
 package edu.example.demoproject.services;
 
-import edu.example.demoproject.dtos.items.ItemCreateDto;
-import edu.example.demoproject.dtos.items.ItemDto;
+import edu.example.demoproject.dtos.cart.CartAction;
+import edu.example.demoproject.dtos.item.ItemCreateDto;
+import edu.example.demoproject.dtos.item.ItemDto;
 import edu.example.demoproject.entities.ItemEntity;
 import edu.example.demoproject.mappers.ItemMapper;
 import edu.example.demoproject.repos.ItemRepository;
@@ -30,19 +31,17 @@ public class ItemService {
             ItemEntity entity = itemMapper.dtoToEntity(dto);
             itemRepository.persist(entity);
         } else {
-            incrementQtyItem(ifItemExists.get().getProductId());
+            incrementQtyItem(ifItemExists.get());
         }
     }
 
     @Transactional
-    public void incrementQtyItem(Long productId) {//при нажатии на кнопку плюсик рядом с продуктом
-        ItemDto dto = getItemByProductId(productId);
+    public void incrementQtyItem(ItemDto dto) {
         itemRepository.incrementQty(dto);
     }
 
     @Transactional
-    public void decrementQtyItem(Long productId) {
-        ItemDto dto = getItemByProductId(productId);
+    public void decrementQtyItem(ItemDto dto) {
         itemRepository.decrementQty(dto);
         removeItemQtyNull(dto);
     }
@@ -65,4 +64,15 @@ public class ItemService {
         itemRepository.deleteIfQtyNull(dto);
     }
 
+    @Transactional
+    public void doAction(Long productId, CartAction cartAction) throws Exception {
+        ItemDto dto = getItemByProductId(productId);
+        switch (cartAction){
+            case DECREMENT -> decrementQtyItem(dto);
+            case INCREMENT -> incrementQtyItem(dto);
+            default -> {
+                throw new Exception("throw new Exception");
+            }
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package edu.example.demoproject.dtos.items;
+package edu.example.demoproject.dtos.item;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

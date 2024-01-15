@@ -1,9 +1,9 @@
 package edu.example.demoproject.controllers;
 
 import edu.example.demoproject.api.ItemApi;
-import edu.example.demoproject.dtos.CartAction;
-import edu.example.demoproject.dtos.items.ItemCreateDto;
-import edu.example.demoproject.dtos.items.ItemDto;
+import edu.example.demoproject.dtos.cart.CartAction;
+import edu.example.demoproject.dtos.item.ItemCreateDto;
+import edu.example.demoproject.dtos.item.ItemDto;
 import edu.example.demoproject.services.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,13 +31,13 @@ public class ItemController implements ItemApi {
     }
 
     @Override
-    public void incrementQtyItem(Long userId, Long productId, CartAction action) {
-
+    public ResponseEntity getListActions() {
+        return ResponseEntity.ok().body(CartAction.values());
     }
 
     @Override
-    public void decrementQtyItem(Long productId) {
-        itemService.decrementQtyItem(productId);
+    public void doAction(Long productId, CartAction action) throws Exception {
+        itemService.doAction(productId, action);
     }
 
     @Override

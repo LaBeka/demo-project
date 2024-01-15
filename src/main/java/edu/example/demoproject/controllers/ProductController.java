@@ -1,6 +1,6 @@
 package edu.example.demoproject.controllers;
 
-import edu.example.demoproject.api.ProductsApi;
+import edu.example.demoproject.api.ProductApi;
 import edu.example.demoproject.dtos.product.ProductCreateDto;
 import edu.example.demoproject.dtos.product.ProductCriteriaDto;
 import edu.example.demoproject.dtos.product.ProductDto;
@@ -10,11 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class ProductController implements ProductsApi {
+public class ProductController implements ProductApi {
     final private ProductService productService;
 
     @Override
@@ -48,8 +49,14 @@ public class ProductController implements ProductsApi {
     }
 
     @Override
-    public void delete(Long id) {
+    public ResponseEntity delete(Long id, Principal principal) {
+        if(principal == null){
+           return new ResponseEntity("", HttpStatus.NOT_FOUND);
+        }
+        String email = principal.getName();
+        //User user = userService.checkIfUserExists(email);
         productService.deleteProduct(id);
+        return new ResponseEntity("", HttpStatus.OK);
     }
 
 }

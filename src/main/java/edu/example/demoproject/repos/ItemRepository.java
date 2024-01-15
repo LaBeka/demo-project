@@ -1,7 +1,7 @@
 package edu.example.demoproject.repos;
 
-import edu.example.demoproject.dtos.items.ItemCreateDto;
-import edu.example.demoproject.dtos.items.ItemDto;
+import edu.example.demoproject.dtos.item.ItemCreateDto;
+import edu.example.demoproject.dtos.item.ItemDto;
 import edu.example.demoproject.entities.ItemEntity;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +13,7 @@ public class ItemRepository extends BaseRepository<ItemEntity> {
 
     public List<ItemDto> getItemsByCartId(Long cartId) {
         return em.createQuery("""
-                              select new edu.example.demoproject.dtos.items.ItemDto(
+                              select new edu.example.demoproject.dtos.item.ItemDto(
                               i.id, i.cartId, i.productId, i.qty)
                               from ItemEntity i
                               where i.cartId = :cartId
@@ -24,7 +24,7 @@ public class ItemRepository extends BaseRepository<ItemEntity> {
 
     public Optional<ItemDto> ifItemInCartExists(ItemCreateDto dto) {
         return em.createQuery("""
-                        select new edu.example.demoproject.dtos.items.ItemDto(
+                        select new edu.example.demoproject.dtos.item.ItemDto(
                         i.id, i.cartId, i.productId, i.qty)
                         from ItemEntity i
                         where i.productId = :productId
@@ -64,7 +64,7 @@ public class ItemRepository extends BaseRepository<ItemEntity> {
 
     public ItemDto getItemByItsProductId(Long productId) {
         return em.createQuery("""
-                              select new edu.example.demoproject.dtos.items.ItemDto(
+                              select new edu.example.demoproject.dtos.item.ItemDto(
                               i.id, i.cartId, i.productId, i.qty)
                               from ItemEntity i
                               where i.productId = :productId
